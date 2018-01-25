@@ -12,7 +12,6 @@ class busStopsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print ("HELLO")
         guard let url = URL(string: "http://passenger.vistar.su/VPArrivalServer/stoplist") else {return}
         let parameters = ["regionId":"36"]
         var request = URLRequest(url: url)
@@ -30,10 +29,12 @@ class busStopsTableViewController: UITableViewController {
             do{
                 let json = try JSONSerialization.jsonObject(with: data, options: [])
                 print(json)
+                
             } catch {
                 print(error)
             }
         }.resume()
+        
         
         
         
