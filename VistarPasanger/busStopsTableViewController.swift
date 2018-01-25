@@ -9,6 +9,20 @@
 import UIKit
 
 class busStopsTableViewController: UITableViewController {
+    
+    struct busStopsResponce: Decodable {
+        var status: String?
+        var hash: Int?
+        var stops: Dictionary<String, BusStop>?
+    }
+    
+    struct BusStop: Decodable {
+        var comment: String?
+        var id: Int?
+        var lat: Double?
+        var lon: Double?
+        var name: String?
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,9 +41,8 @@ class busStopsTableViewController: UITableViewController {
             
             guard let data = data else {return}
             do{
-                let json = try JSONSerialization.jsonObject(with: data, options: [])
-                print(json)
-                
+                let busStops = try JSONDecoder().decode(busStopsResponce.self, from: data)
+                print (busStops.hash!)
             } catch {
                 print(error)
             }
