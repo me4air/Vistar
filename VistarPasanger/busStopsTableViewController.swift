@@ -12,12 +12,33 @@ class busStopsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        print ("HELLO")
+        guard let url = URL(string: "http://passenger.vistar.su/VPArrivalServer/stoplist") else {return}
+        let parameters = ["regionId":"36"]
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {return}
+        request.httpBody = httpBody
+        
+        let session = URLSession.shared
+        session.dataTask(with: request) { (data, response, erroe) in
+            if let response = response {
+                print(response)
+            }
+            
+            guard let data = data else {return}
+            do{
+                let json = try JSONSerialization.jsonObject(with: data, options: [])
+                print(json)
+            } catch {
+                print(error)
+            }
+        }.resume()
+        
+        
+        
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -36,6 +57,12 @@ class busStopsTableViewController: UITableViewController {
         // #warning Incomplete implementation, return the number of rows
         return 0
     }
+    
+     // MARK: - Networking
+    
+    
+    
+    
 
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
