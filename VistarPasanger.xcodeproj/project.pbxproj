@@ -8,24 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		A031A10B2019F50C00AC85DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A031A10A2019F50C00AC85DF /* AppDelegate.swift */; };
-		A031A10D2019F50C00AC85DF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A031A10C2019F50C00AC85DF /* ViewController.swift */; };
 		A031A1102019F50C00AC85DF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A031A10E2019F50C00AC85DF /* Main.storyboard */; };
 		A031A1132019F50C00AC85DF /* VistarPasanger.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A031A1112019F50C00AC85DF /* VistarPasanger.xcdatamodeld */; };
 		A031A1152019F50C00AC85DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A031A1142019F50C00AC85DF /* Assets.xcassets */; };
 		A031A1182019F50C00AC85DF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A031A1162019F50C00AC85DF /* LaunchScreen.storyboard */; };
 		A031A1202019F67800AC85DF /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = A031A11F2019F67800AC85DF /* .gitignore */; };
+		A031A1222019FB6C00AC85DF /* busStopsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A031A1212019FB6C00AC85DF /* busStopsTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		A031A1072019F50C00AC85DF /* VistarPasanger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VistarPasanger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A031A10A2019F50C00AC85DF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A031A10C2019F50C00AC85DF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A031A10F2019F50C00AC85DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A031A1122019F50C00AC85DF /* VistarPasanger.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VistarPasanger.xcdatamodel; sourceTree = "<group>"; };
 		A031A1142019F50C00AC85DF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A031A1172019F50C00AC85DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A031A1192019F50C00AC85DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A031A11F2019F67800AC85DF /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		A031A1212019FB6C00AC85DF /* busStopsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = busStopsTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,14 +58,14 @@
 		A031A1092019F50C00AC85DF /* VistarPasanger */ = {
 			isa = PBXGroup;
 			children = (
-				A031A11F2019F67800AC85DF /* .gitignore */,
+				A031A1212019FB6C00AC85DF /* busStopsTableViewController.swift */,
 				A031A10A2019F50C00AC85DF /* AppDelegate.swift */,
-				A031A10C2019F50C00AC85DF /* ViewController.swift */,
 				A031A10E2019F50C00AC85DF /* Main.storyboard */,
+				A031A1112019F50C00AC85DF /* VistarPasanger.xcdatamodeld */,
 				A031A1142019F50C00AC85DF /* Assets.xcassets */,
 				A031A1162019F50C00AC85DF /* LaunchScreen.storyboard */,
 				A031A1192019F50C00AC85DF /* Info.plist */,
-				A031A1112019F50C00AC85DF /* VistarPasanger.xcdatamodeld */,
+				A031A11F2019F67800AC85DF /* .gitignore */,
 			);
 			path = VistarPasanger;
 			sourceTree = "<group>";
@@ -144,8 +144,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A031A1132019F50C00AC85DF /* VistarPasanger.xcdatamodeld in Sources */,
-				A031A10D2019F50C00AC85DF /* ViewController.swift in Sources */,
 				A031A10B2019F50C00AC85DF /* AppDelegate.swift in Sources */,
+				A031A1222019FB6C00AC85DF /* busStopsTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
