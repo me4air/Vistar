@@ -8,24 +8,25 @@
 
 import UIKit
 
+struct busStopsResponce: Decodable {
+    var status: String?
+    var hash: Int?
+    var stops: Dictionary<String, BusStop>?
+}
+
+struct BusStop: Decodable {
+    var comment: String?
+    var id: Int?
+    var lat: Double?
+    var lon: Double?
+    var name: String?
+}
+
 class busStopsTableViewController: UITableViewController {
     
-    struct busStopsResponce: Decodable {
-        var status: String?
-        var hash: Int?
-        var stops: Dictionary<String, BusStop>?
-    }
+    var allBusStops =  busStopsResponce()
     
-    struct BusStop: Decodable {
-        var comment: String?
-        var id: Int?
-        var lat: Double?
-        var lon: Double?
-        var name: String?
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    func getBusStopsDataFromServer() {
         guard let url = URL(string: "http://passenger.vistar.su/VPArrivalServer/stoplist") else {return}
         let parameters = ["regionId":"36"]
         var request = URLRequest(url: url)
@@ -35,24 +36,32 @@ class busStopsTableViewController: UITableViewController {
         
         let session = URLSession.shared
         session.dataTask(with: request) { (data, response, erroe) in
-            if let response = response {
-                print(response)
-            }
+            /*if let response = response {
+               print(response)
+            }*/
             
             guard let data = data else {return}
             do{
                 let busStops = try JSONDecoder().decode(busStopsResponce.self, from: data)
-                print (busStops.hash!)
+                self.allBusStops = busStops
+                self.reloadTableViewData()
             } catch {
                 print(error)
             }
-        }.resume()
+            }.resume()
+        return
+    }
+    
+    func reloadTableViewData(){
+        DispatchQueue.main.async {
+           self.tableView.reloadData()
+        }
         
-        
-        
-        
-        
-        
+    }
+  
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        getBusStopsDataFromServer()
     }
 
     override func didReceiveMemoryWarning() {
@@ -64,29 +73,38 @@ class busStopsTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        if allBusStops.stops?.count != nil {
+            return (allBusStops.stops?.count)!}
+        else {return 1}
     }
     
      // MARK: - Networking
     
     
     
-    
-
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        if allBusStops.stops?.count != nil {
+            var stopsArray = Array(self.allBusStops.stops!)
+            cell.textLabel?.text=stopsArray[indexPath.row].value.name!
+            if let comment = stopsArray[indexPath.row].value.comment{
+                cell.detailTextLabel?.text=comment
+            } else{
+                cell.detailTextLabel?.text=""}
+            print((self.allBusStops.stops?.count)!)
+            print(stopsArray[1].value.name!)
+        }
+        else {
+            cell.textLabel?.text=""
+            
+        }
         return cell
     }
-    */
+    
 
     /*
     // Override to support conditional editing of the table view.
