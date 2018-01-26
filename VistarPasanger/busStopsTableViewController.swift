@@ -82,29 +82,45 @@ class busStopsTableViewController: UITableViewController {
         else {return 1}
     }
     
-     // MARK: - Networking
-    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! BusStopTableViewCell
         if allBusStops.stops?.count != nil {
             var stopsArray = Array(self.allBusStops.stops!)
-            cell.textLabel?.text=stopsArray[indexPath.row].value.name!
+            cell.nameLabel.text=stopsArray[indexPath.row].value.name!
             if let comment = stopsArray[indexPath.row].value.comment{
-                cell.detailTextLabel?.text=comment
+                cell.commentLabel.text=comment
             } else{
-                cell.detailTextLabel?.text=""}
-            print((self.allBusStops.stops?.count)!)
-            print(stopsArray[1].value.name!)
+                cell.commentLabel.text=""
+            }
         }
         else {
-            cell.textLabel?.text=""
+            cell.nameLabel.text=""
+            cell.commentLabel.text=""
             
         }
         return cell
     }
     
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+           if segue.identifier == "detailBusStopSegue" {
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let dvc = segue.destination  as! DetailBusViewController
+                var stopsArray = Array(self.allBusStops.stops!)
+                if let name = stopsArray[indexPath.row].value.name {
+                    dvc.busStopName = name
+                }
+                if let comment = stopsArray[indexPath.row].value.comment {
+                    dvc.busStopComment = comment
+                }    
+            }
+        }
+    }
 
     /*
     // Override to support conditional editing of the table view.
