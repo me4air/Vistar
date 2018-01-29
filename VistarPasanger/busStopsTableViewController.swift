@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 struct busStopsResponce: Decodable {
     var status: String?
@@ -24,7 +25,9 @@ struct BusStop: Decodable {
 
 class busStopsTableViewController: UITableViewController {
     
-    var allBusStops =  busStopsResponce()
+  //  var allBusStops =  busStopsResponce()
+    var busStops: [BusStops] = []
+    
     
     func getBusStopsDataFromServer() {
         guard let url = URL(string: "http://passenger.vistar.su/VPArrivalServer/stoplist") else {return}
@@ -36,32 +39,56 @@ class busStopsTableViewController: UITableViewController {
         
         let session = URLSession.shared
         session.dataTask(with: request) { (data, response, erroe) in
-            /*if let response = response {
+            if let response = response {
                print(response)
-            }*/
-            
+            }
             guard let data = data else {return}
             do{
                 let busStops = try JSONDecoder().decode(busStopsResponce.self, from: data)
-                self.allBusStops = busStops
-                self.reloadTableViewData()
+              //  self.allBusStops = busStops
+                self.reloadTableViewDataAndSaveInCoreData(allBusStops: busStops)
             } catch {
                 print(error)
             }
             }.resume()
         return
     }
-    
-    func reloadTableViewData(){
+        func reloadTableViewDataAndSaveInCoreData(allBusStops: busStopsResponce){
         DispatchQueue.main.async {
-           self.tableView.reloadData()
+            for i in 0...allBusStops.stops!.values.count-1{
+                self.saveData(busStops: Array(allBusStops.stops!.values)[i])
+            }
+            self.tableView.reloadData()
         }
         
     }
   
+    func saveData(busStops: BusStop){
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let entity = NSEntityDescription.entity(forEntityName: "BusStops", in: context)
+        let taskObject = NSManagedObject(entity: entity!, insertInto: context) as! BusStops
+        taskObject.comment = busStops.comment
+        taskObject.id = Double(busStops.id!)
+        taskObject.name = busStops.name
+        taskObject.lat = busStops.lat!
+        taskObject.lon = busStops.lon!
+        
+        do {
+            try context.save()
+            self.busStops.append(taskObject)
+        }
+        catch {
+            print(error.localizedDescription)
+        } 
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         getBusStopsDataFromServer()
+
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -78,8 +105,10 @@ class busStopsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if allBusStops.stops?.count != nil {
-            return (allBusStops.stops?.count)!}
-        else {return 1}
+            return (allBusStops.stops?.count)!
+        }
+        else {
+            return 1}
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
