@@ -34,28 +34,37 @@ class busStopsTableViewController: UITableViewController {
     
     //Функция получения данных о остановках с сервера
     func getBusStopsDataFromServer() {
+        
+        //Готовим параметры
         guard let url = URL(string: "http://passenger.vistar.su/VPArrivalServer/stoplist") else {return}
         let parameters = ["regionId":"36"]
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {return}
         request.httpBody = httpBody
-        
+        //Начинаем сесисю пробуем получить и распарсить данные
         let session = URLSession.shared
         session.dataTask(with: request) { (data, response, erroe) in
             if let response = response {
                print(response)
             }
             guard let data = data else {return}
+            
             do{
                 let busStops = try JSONDecoder().decode(busStopsResponce.self, from: data)
-                self.reloadTableViewDataAndSaveInCoreData(allBusStops: busStops)
+                if UserDefaults.standard.integer(forKey: "BusHash") != busStops.hash {
+                    self.deleteAllRecordsAboutBusStops()
+                    UserDefaults.standard.set(busStops.hash, forKey: "BusHash")
+                    self.reloadTableViewDataAndSaveInCoreData(allBusStops: busStops)
+                }
             } catch {
                 print(error)
             }
             }.resume()
         return
     }
+    
+    //Обновляем табличку и сохраняем данные в CoreData когда сервер нам что-то пришлет
         func reloadTableViewDataAndSaveInCoreData(allBusStops: busStopsResponce){
         DispatchQueue.main.async {
             for i in 0...allBusStops.stops!.values.count-1{
@@ -66,6 +75,7 @@ class busStopsTableViewController: UITableViewController {
         
     }
   
+    //Сохранение данных в CoreData
     func saveData(busStops: BusStop){
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
@@ -87,6 +97,40 @@ class busStopsTableViewController: UITableViewController {
         
     }
     
+    //Очищаем БД. Функция нужна на тот случай если с сервера пришли данные отличные от БД
+    func deleteAllRecordsAboutBusStops(){
+         DispatchQueue.main.async {
+        let delegate = UIApplication.shared.delegate as! AppDelegate
+        let context = delegate.persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "BusStops")
+        fetchRequest.includesPropertyValues = false
+        do {
+            let items = try context.fetch(fetchRequest) as! [NSManagedObject]
+            
+            for item in items {
+                context.delete(item)
+            }
+            try context.save()
+            
+        } catch {
+            print ("There was an error")
+            }
+        }
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        
+        let fetchRequest: NSFetchRequest<BusStops> = BusStops.fetchRequest()
+        
+        do {
+            busStops = try context.fetch(fetchRequest)
+        } catch {print(error.localizedDescription)}
+        print(busStops.count)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         getBusStopsDataFromServer()
@@ -102,7 +146,6 @@ class busStopsTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
@@ -111,7 +154,8 @@ class busStopsTableViewController: UITableViewController {
             return (busStops.count)
         }
         else {
-            return 0}
+            return 0
+        }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
