@@ -10,7 +10,6 @@ import UIKit
 
 class BusStopTableViewCell: UITableViewCell {
     var isChecked = false
-    @IBOutlet weak var starButton: UIButton!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var commentLabel: UILabel!
     override func awakeFromNib() {

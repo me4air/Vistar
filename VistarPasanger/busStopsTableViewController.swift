@@ -137,9 +137,10 @@ class busStopsTableViewController: UIViewController, UITableViewDelegate, UITabl
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-        getBusStopsDataFromServer()
-
-        
+        tableView.estimatedRowHeight = 85
+        tableView.rowHeight = UITableViewAutomaticDimension
+        definesPresentationContext = true
+        getBusStopsDataFromServer() 
     }
 
     override func didReceiveMemoryWarning() {

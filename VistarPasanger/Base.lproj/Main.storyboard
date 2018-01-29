@@ -6,7 +6,6 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -30,50 +29,39 @@
                                 <rect key="frame" x="0.0" y="92" width="375" height="575"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="63" id="beF-MT-EM5" customClass="BusStopTableViewCell" customModule="VistarPasanger" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="63"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="59" id="beF-MT-EM5" customClass="BusStopTableViewCell" customModule="VistarPasanger" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="59"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="beF-MT-EM5" id="Vbr-Fa-kQ5">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="62.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="58.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Описание" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ahV-yu-0Jp">
-                                                    <rect key="frame" x="16" y="35" width="288" height="17"/>
+                                                    <rect key="frame" x="16" y="35" width="286" height="17"/>
                                                     <fontDescription key="fontDescription" name="AppleSDGothicNeo-Light" family="Apple SD Gothic Neo" pointSize="14"/>
                                                     <color key="textColor" red="0.18311786167512689" green="0.18311786167512689" blue="0.18311786167512689" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i6v-zF-MN8">
-                                                    <rect key="frame" x="329" y="14" width="40" height="40"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" secondItem="i6v-zF-MN8" secondAttribute="height" multiplier="1:1" id="se2-rc-4DO"/>
-                                                    </constraints>
-                                                    <state key="normal" image="star"/>
-                                                </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Остановка" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9xQ-Os-iyx">
-                                                    <rect key="frame" x="16" y="11" width="288" height="22"/>
+                                                    <rect key="frame" x="15" y="11" width="286" height="22"/>
                                                     <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottomMargin" secondItem="i6v-zF-MN8" secondAttribute="bottom" constant="5" id="1Wy-RT-7tc"/>
                                                 <constraint firstItem="ahV-yu-0Jp" firstAttribute="leading" secondItem="Vbr-Fa-kQ5" secondAttribute="leading" constant="16" id="2H9-4r-exz"/>
-                                                <constraint firstItem="i6v-zF-MN8" firstAttribute="top" secondItem="Vbr-Fa-kQ5" secondAttribute="topMargin" constant="3" id="5aX-lK-HC9"/>
-                                                <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="ahV-yu-0Jp" secondAttribute="trailing" constant="71" id="JSh-wx-mdB"/>
-                                                <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="9xQ-Os-iyx" secondAttribute="trailing" constant="71" id="dUI-pA-eZj"/>
-                                                <constraint firstItem="i6v-zF-MN8" firstAttribute="leading" secondItem="Vbr-Fa-kQ5" secondAttribute="leading" constant="329" id="e5y-2x-8t5"/>
+                                                <constraint firstAttribute="bottom" secondItem="ahV-yu-0Jp" secondAttribute="bottom" constant="6.5" id="Ivr-HM-gMT"/>
+                                                <constraint firstAttribute="trailing" secondItem="9xQ-Os-iyx" secondAttribute="trailing" constant="74" id="ck3-o7-vjU"/>
                                                 <constraint firstItem="ahV-yu-0Jp" firstAttribute="top" secondItem="9xQ-Os-iyx" secondAttribute="bottom" constant="2" id="hO5-ly-93D"/>
                                                 <constraint firstItem="9xQ-Os-iyx" firstAttribute="top" secondItem="Vbr-Fa-kQ5" secondAttribute="top" constant="11" id="hjI-L6-feJ"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="i6v-zF-MN8" secondAttribute="trailing" id="qwg-Hw-IYj"/>
-                                                <constraint firstItem="9xQ-Os-iyx" firstAttribute="leading" secondItem="Vbr-Fa-kQ5" secondAttribute="leading" constant="16" id="rOt-qy-7Sp"/>
+                                                <constraint firstItem="9xQ-Os-iyx" firstAttribute="leading" secondItem="Vbr-Fa-kQ5" secondAttribute="leading" constant="15" id="rOt-qy-7Sp"/>
+                                                <constraint firstAttribute="trailing" secondItem="ahV-yu-0Jp" secondAttribute="trailing" constant="73" id="vf2-H2-HvD"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="commentLabel" destination="ahV-yu-0Jp" id="33M-3d-Sa3"/>
                                             <outlet property="nameLabel" destination="9xQ-Os-iyx" id="gds-68-CYd"/>
-                                            <outlet property="starButton" destination="i6v-zF-MN8" id="zwp-9G-2Wo"/>
                                             <segue destination="yVa-ba-hx0" kind="show" identifier="detailBusStopSegue" id="qb4-gi-2gj"/>
                                         </connections>
                                     </tableViewCell>
@@ -193,7 +181,4 @@
             <point key="canvasLocation" x="-359" y="119"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="star" width="40" height="40"/>
-    </resources>
 </document>
