@@ -27,9 +27,11 @@ struct BusStop: Decodable {
 }
 
 
-class busStopsTableViewController: UITableViewController {
+class busStopsTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    @IBOutlet weak var tableView: UITableView!
     //Массив остановок для работы с БД CoreData
+   
     var busStops: [BusStops] = []
     
     //Функция получения данных о остановках с сервера
@@ -133,6 +135,8 @@ class busStopsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.delegate = self
+        tableView.dataSource = self
         getBusStopsDataFromServer()
 
         
@@ -145,11 +149,11 @@ class busStopsTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if busStops.count != 0 {
             return (busStops.count)
         }
@@ -158,12 +162,12 @@ class busStopsTableViewController: UITableViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! BusStopTableViewCell
         if busStops.count != 0 {
             cell.nameLabel.text=busStops[indexPath.row].name!
