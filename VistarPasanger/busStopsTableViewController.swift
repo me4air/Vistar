@@ -9,6 +9,9 @@
 import UIKit
 import CoreData
 
+
+//Реализуем 2 Decodable структуры, чтобы swift сам распарсил из JSON
+
 struct busStopsResponce: Decodable {
     var status: String?
     var hash: Int?
@@ -23,12 +26,13 @@ struct BusStop: Decodable {
     var name: String?
 }
 
+
 class busStopsTableViewController: UITableViewController {
     
-  //  var allBusStops =  busStopsResponce()
+    //Массив остановок для работы с БД CoreData
     var busStops: [BusStops] = []
     
-    
+    //Функция получения данных о остановках с сервера
     func getBusStopsDataFromServer() {
         guard let url = URL(string: "http://passenger.vistar.su/VPArrivalServer/stoplist") else {return}
         let parameters = ["regionId":"36"]
@@ -45,7 +49,6 @@ class busStopsTableViewController: UITableViewController {
             guard let data = data else {return}
             do{
                 let busStops = try JSONDecoder().decode(busStopsResponce.self, from: data)
-              //  self.allBusStops = busStops
                 self.reloadTableViewDataAndSaveInCoreData(allBusStops: busStops)
             } catch {
                 print(error)
@@ -104,11 +107,11 @@ class busStopsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if allBusStops.stops?.count != nil {
-            return (allBusStops.stops?.count)!
+        if busStops.count != 0 {
+            return (busStops.count)
         }
         else {
-            return 1}
+            return 0}
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -118,10 +121,9 @@ class busStopsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! BusStopTableViewCell
-        if allBusStops.stops?.count != nil {
-            var stopsArray = Array(self.allBusStops.stops!)
-            cell.nameLabel.text=stopsArray[indexPath.row].value.name!
-            if let comment = stopsArray[indexPath.row].value.comment{
+        if busStops.count != 0 {
+            cell.nameLabel.text=busStops[indexPath.row].name!
+            if let comment = busStops[indexPath.row].comment{
                 cell.commentLabel.text=comment
             } else{
                 cell.commentLabel.text=""
@@ -140,11 +142,10 @@ class busStopsTableViewController: UITableViewController {
            if segue.identifier == "detailBusStopSegue" {
             if let indexPath = tableView.indexPathForSelectedRow {
                 let dvc = segue.destination  as! DetailBusViewController
-                var stopsArray = Array(self.allBusStops.stops!)
-                if let name = stopsArray[indexPath.row].value.name {
+                if let name = busStops[indexPath.row].name {
                     dvc.busStopName = name
                 }
-                if let comment = stopsArray[indexPath.row].value.comment {
+                if let comment = busStops[indexPath.row].comment {
                     dvc.busStopComment = comment
                 }    
             }
