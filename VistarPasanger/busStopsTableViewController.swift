@@ -31,7 +31,7 @@ class busStopsTableViewController: UIViewController, UITableViewDelegate, UITabl
     
     @IBOutlet weak var tableView: UITableView!
     //Массив остановок для работы с БД CoreData
-   
+    
     var busStops: [BusStops] = []
     
     //Функция получения данных о остановках с сервера
@@ -48,7 +48,7 @@ class busStopsTableViewController: UIViewController, UITableViewDelegate, UITabl
         let session = URLSession.shared
         session.dataTask(with: request) { (data, response, erroe) in
             if let response = response {
-               print(response)
+                print(response)
             }
             guard let data = data else {return}
             
@@ -67,7 +67,7 @@ class busStopsTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     //Обновляем табличку и сохраняем данные в CoreData когда сервер нам что-то пришлет
-        func reloadTableViewDataAndSaveInCoreData(allBusStops: busStopsResponce){
+    func reloadTableViewDataAndSaveInCoreData(allBusStops: busStopsResponce){
         DispatchQueue.main.async {
             for i in 0...allBusStops.stops!.values.count-1{
                 self.saveData(busStops: Array(allBusStops.stops!.values)[i])
@@ -76,7 +76,7 @@ class busStopsTableViewController: UIViewController, UITableViewDelegate, UITabl
         }
         
     }
-  
+    
     //Сохранение данных в CoreData
     func saveData(busStops: BusStop){
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -101,21 +101,21 @@ class busStopsTableViewController: UIViewController, UITableViewDelegate, UITabl
     
     //Очищаем БД. Функция нужна на тот случай если с сервера пришли данные отличные от БД
     func deleteAllRecordsAboutBusStops(){
-         DispatchQueue.main.async {
-        let delegate = UIApplication.shared.delegate as! AppDelegate
-        let context = delegate.persistentContainer.viewContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "BusStops")
-        fetchRequest.includesPropertyValues = false
-        do {
-            let items = try context.fetch(fetchRequest) as! [NSManagedObject]
-            
-            for item in items {
-                context.delete(item)
-            }
-            try context.save()
-            
-        } catch {
-            print ("There was an error")
+        DispatchQueue.main.async {
+            let delegate = UIApplication.shared.delegate as! AppDelegate
+            let context = delegate.persistentContainer.viewContext
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "BusStops")
+            fetchRequest.includesPropertyValues = false
+            do {
+                let items = try context.fetch(fetchRequest) as! [NSManagedObject]
+                
+                for item in items {
+                    context.delete(item)
+                }
+                try context.save()
+                
+            } catch {
+                print (error.localizedDescription)
             }
         }
     }
@@ -127,10 +127,10 @@ class busStopsTableViewController: UIViewController, UITableViewDelegate, UITabl
         
         let fetchRequest: NSFetchRequest<BusStops> = BusStops.fetchRequest()
         
+        
         do {
             busStops = try context.fetch(fetchRequest)
         } catch {print(error.localizedDescription)}
-        print(busStops.count)
     }
     
     override func viewDidLoad() {
@@ -142,19 +142,19 @@ class busStopsTableViewController: UIViewController, UITableViewDelegate, UITabl
         definesPresentationContext = true
         getBusStopsDataFromServer() 
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     // MARK: - Table view data source
-
-     func numberOfSections(in tableView: UITableView) -> Int {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-
-     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if busStops.count != 0 {
             return (busStops.count)
         }
@@ -163,12 +163,12 @@ class busStopsTableViewController: UIViewController, UITableViewDelegate, UITabl
         }
     }
     
-     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
     
-     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! BusStopTableViewCell
         if busStops.count != 0 {
             cell.nameLabel.text=busStops[indexPath.row].name!
@@ -188,7 +188,7 @@ class busStopsTableViewController: UIViewController, UITableViewDelegate, UITabl
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-           if segue.identifier == "detailBusStopSegue" {
+        if segue.identifier == "detailBusStopSegue" {
             if let indexPath = tableView.indexPathForSelectedRow {
                 let dvc = segue.destination  as! DetailBusViewController
                 if let name = busStops[indexPath.row].name {
@@ -196,54 +196,57 @@ class busStopsTableViewController: UIViewController, UITableViewDelegate, UITabl
                 }
                 if let comment = busStops[indexPath.row].comment {
                     dvc.busStopComment = comment
-                }    
+                }
+                let busStart = String(Int(busStops[indexPath.row].id))
+                dvc.bustStopStartPoint = busStart
+                
             }
         }
     }
-
+    
     /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
+     // Override to support conditional editing of the table view.
+     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+     // Return false if you do not want the specified item to be editable.
+     return true
+     }
+     */
+    
     /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
+     // Override to support editing the table view.
+     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+     if editingStyle == .delete {
+     // Delete the row from the data source
+     tableView.deleteRows(at: [indexPath], with: .fade)
+     } else if editingStyle == .insert {
+     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+     }
+     }
+     */
+    
     /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
+     // Override to support rearranging the table view.
+     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+     
+     }
+     */
+    
     /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
+     // Override to support conditional rearranging of the table view.
+     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+     // Return false if you do not want the item to be re-orderable.
+     return true
+     }
+     */
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

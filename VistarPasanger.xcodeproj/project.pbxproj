@@ -16,6 +16,7 @@
 		A031A1222019FB6C00AC85DF /* busStopsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A031A1212019FB6C00AC85DF /* busStopsTableViewController.swift */; };
 		A073194E201B31DC009761CB /* BusStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A073194D201B31DC009761CB /* BusStopTableViewCell.swift */; };
 		A0731950201B4C7F009761CB /* DetailBusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A073194F201B4C7F009761CB /* DetailBusViewController.swift */; };
+		A08C2DAF202098F600F12A31 /* busArrivalTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2DAE202098F600F12A31 /* busArrivalTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		A031A1212019FB6C00AC85DF /* busStopsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = busStopsTableViewController.swift; sourceTree = "<group>"; };
 		A073194D201B31DC009761CB /* BusStopTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopTableViewCell.swift; sourceTree = "<group>"; };
 		A073194F201B4C7F009761CB /* DetailBusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailBusViewController.swift; sourceTree = "<group>"; };
+		A08C2DAE202098F600F12A31 /* busArrivalTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = busArrivalTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,8 +67,9 @@
 				A031A1212019FB6C00AC85DF /* busStopsTableViewController.swift */,
 				A073194D201B31DC009761CB /* BusStopTableViewCell.swift */,
 				A031A10A2019F50C00AC85DF /* AppDelegate.swift */,
-				A031A10E2019F50C00AC85DF /* Main.storyboard */,
 				A073194F201B4C7F009761CB /* DetailBusViewController.swift */,
+				A031A10E2019F50C00AC85DF /* Main.storyboard */,
+				A08C2DAE202098F600F12A31 /* busArrivalTableViewCell.swift */,
 				A031A1112019F50C00AC85DF /* VistarPasanger.xcdatamodeld */,
 				A031A1142019F50C00AC85DF /* Assets.xcassets */,
 				A031A1162019F50C00AC85DF /* LaunchScreen.storyboard */,
@@ -153,6 +156,7 @@
 				A0731950201B4C7F009761CB /* DetailBusViewController.swift in Sources */,
 				A031A1132019F50C00AC85DF /* VistarPasanger.xcdatamodeld in Sources */,
 				A031A10B2019F50C00AC85DF /* AppDelegate.swift in Sources */,
+				A08C2DAF202098F600F12A31 /* busArrivalTableViewCell.swift in Sources */,
 				A031A1222019FB6C00AC85DF /* busStopsTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
