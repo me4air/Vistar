@@ -95,6 +95,7 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, UITableVie
         request.httpBody = httpBody
         let session = URLSession.shared
         session.dataTask(with: request) { (data, response, erroe) in
+            DispatchQueue.main.async {
             if let response = response {
                  print(response)
             }
@@ -105,6 +106,8 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, UITableVie
                 self.filterBusStopsArrival(response: busArivals)
             } catch {
                 print(error)
+                }
+                
             }
             }.resume()
     }

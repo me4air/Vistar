@@ -27,7 +27,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YRP-rx-dre">
-                                <rect key="frame" x="0.0" y="92" width="375" height="575"/>
+                                <rect key="frame" x="0.0" y="105" width="375" height="562"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="cell" rowHeight="59" id="beF-MT-EM5" customClass="BusStopTableViewCell" customModule="VistarPasanger" customModuleProvider="target">
@@ -69,35 +69,39 @@
                                 </prototypes>
                             </tableView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="qtD-Xn-XqU">
-                                <rect key="frame" x="16" y="64" width="343" height="29"/>
+                                <rect key="frame" x="16" y="72" width="343" height="29"/>
                                 <segments>
-                                    <segment title="Все"/>
                                     <segment title="Ближайшие"/>
                                     <segment title="Избранные"/>
+                                    <segment title="Все"/>
                                 </segments>
                                 <color key="tintColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="busSegmentValueChanged:" destination="w9A-Sp-i1g" eventType="valueChanged" id="dMV-VF-d8k"/>
+                                </connections>
                             </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="YRP-rx-dre" firstAttribute="trailing" secondItem="rsF-EW-T1i" secondAttribute="trailing" id="Fed-3V-uot"/>
                             <constraint firstItem="qtD-Xn-XqU" firstAttribute="trailing" secondItem="rsF-EW-T1i" secondAttribute="trailing" constant="-16" id="H7s-Dy-umq"/>
-                            <constraint firstItem="YRP-rx-dre" firstAttribute="top" secondItem="qtD-Xn-XqU" secondAttribute="bottom" id="dyz-Ff-mlI"/>
+                            <constraint firstItem="YRP-rx-dre" firstAttribute="top" secondItem="qtD-Xn-XqU" secondAttribute="bottom" constant="5" id="dyz-Ff-mlI"/>
                             <constraint firstItem="qtD-Xn-XqU" firstAttribute="leading" secondItem="rsF-EW-T1i" secondAttribute="leading" constant="16" id="e8K-wz-98M"/>
                             <constraint firstItem="YRP-rx-dre" firstAttribute="leading" secondItem="rsF-EW-T1i" secondAttribute="leading" id="g9C-o1-p50"/>
                             <constraint firstItem="YRP-rx-dre" firstAttribute="bottom" secondItem="rsF-EW-T1i" secondAttribute="bottom" id="rHu-nI-oGN"/>
-                            <constraint firstItem="qtD-Xn-XqU" firstAttribute="top" secondItem="rsF-EW-T1i" secondAttribute="top" id="udR-xW-4OL"/>
+                            <constraint firstItem="qtD-Xn-XqU" firstAttribute="top" secondItem="rsF-EW-T1i" secondAttribute="top" constant="8" id="udR-xW-4OL"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="rsF-EW-T1i"/>
                     </view>
                     <navigationItem key="navigationItem" title="Остановки" largeTitleDisplayMode="always" id="TPd-Oo-ajK"/>
                     <connections>
+                        <outlet property="busSegmentedControl" destination="qtD-Xn-XqU" id="YHS-As-TU5"/>
                         <outlet property="tableView" destination="YRP-rx-dre" id="bmE-34-4er"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O1l-yT-T2p" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="431" y="117"/>
+            <point key="canvasLocation" x="468" y="115.59220389805098"/>
         </scene>
         <!--Автобусы-->
         <scene sceneID="uk3-S2-0QY">
@@ -196,7 +200,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="kAK-n7-aEa"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Автобусы" largeTitleDisplayMode="always" id="C0c-jW-fIg"/>
+                    <navigationItem key="navigationItem" title="Автобусы" largeTitleDisplayMode="never" id="C0c-jW-fIg"/>
                     <connections>
                         <outlet property="activityIndicator" destination="s2h-Ey-L3p" id="7h3-X0-Ifj"/>
                         <outlet property="busStopCommentLabe" destination="uk3-Vz-0qt" id="iO9-e8-zal"/>
@@ -207,7 +211,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3A4-bj-4Ht" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="922" y="117"/>
+            <point key="canvasLocation" x="1241" y="116"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="vLy-ga-zA5">
@@ -225,7 +229,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Oyw-kP-zJO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-72" y="117"/>
+            <point key="canvasLocation" x="-295" y="116"/>
         </scene>
     </scenes>
 </document>
