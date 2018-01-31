@@ -12,6 +12,7 @@ class BusStopTableViewCell: UITableViewCell {
     var isChecked = false
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var commentLabel: UILabel!
+    @IBOutlet weak var favoriteImage: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
         nameLabel.adjustsFontSizeToFitWidth = true

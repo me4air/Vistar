@@ -89,6 +89,7 @@ class busStopsTableViewController: UIViewController, UITableViewDelegate, UITabl
         DispatchQueue.main.async {
             for i in 0...allBusStops.stops!.values.count-1{
                 self.saveData(busStops: Array(allBusStops.stops!.values)[i])
+                self.busStops[i].isFavorite = false
             }
             self.tableView.reloadData()
         }
@@ -207,6 +208,46 @@ class busStopsTableViewController: UIViewController, UITableViewDelegate, UITabl
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        var title = "В избранные"
+        var stopToFavorite: BusStops
+        if searchController.isActive && searchController.searchBar.text != "" {
+            stopToFavorite = filterdResoultArray[indexPath.row]
+        } else {
+            stopToFavorite = busStops[indexPath.row]
+        }
+        
+        if stopToFavorite.isFavorite == true {
+            title = "Убрать из избранного"
+        }
+        let favorite = UITableViewRowAction(style: .default, title: title) { (action, indexPath) in
+            if stopToFavorite.isFavorite != true{
+                stopToFavorite.isFavorite = true
+                
+            }
+            else{
+                stopToFavorite.isFavorite = false
+            }
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            let context = appDelegate.persistentContainer.viewContext
+                let objectToChange = stopToFavorite
+                context.refresh(objectToChange, mergeChanges: true)
+                do {
+                    try context.save()
+                } catch {
+                    print(error.localizedDescription)
+                }
+            self.tableView.reloadData()
+        }
+        if stopToFavorite.isFavorite == true {
+            favorite.backgroundColor = #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)
+        } else {
+            favorite.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
+        }
+        
+        return [favorite]
+    }
+    
     // Получаем Cell для оборажения из поиска
     
     func busStopToDisplayAT(indexPath: IndexPath) -> BusStops {
@@ -231,6 +272,11 @@ class busStopsTableViewController: UIViewController, UITableViewDelegate, UITabl
                 cell.commentLabel.text=comment
             } else{
                 cell.commentLabel.text=""
+            }
+            if busStop.isFavorite {
+                cell.favoriteImage.image = UIImage(named: "star")
+            } else {
+                cell.favoriteImage.image = nil
             }
         }
         else {

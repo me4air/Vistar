@@ -49,10 +49,20 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="D9b-G2-Dg6">
+                                                    <rect key="frame" x="322" y="19" width="20" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" secondItem="D9b-G2-Dg6" secondAttribute="height" multiplier="1:1" id="sNq-oo-73w"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="ahV-yu-0Jp" firstAttribute="leading" secondItem="Vbr-Fa-kQ5" secondAttribute="leading" constant="16" id="2H9-4r-exz"/>
+                                                <constraint firstAttribute="bottom" secondItem="D9b-G2-Dg6" secondAttribute="bottom" constant="19.5" id="A1z-q1-nXY"/>
+                                                <constraint firstItem="D9b-G2-Dg6" firstAttribute="top" secondItem="Vbr-Fa-kQ5" secondAttribute="top" constant="19" id="CfG-Ah-KD8"/>
                                                 <constraint firstAttribute="bottom" secondItem="ahV-yu-0Jp" secondAttribute="bottom" constant="6.5" id="Ivr-HM-gMT"/>
+                                                <constraint firstItem="D9b-G2-Dg6" firstAttribute="leading" secondItem="9xQ-Os-iyx" secondAttribute="trailing" constant="-5" id="Lwd-R7-xPm"/>
+                                                <constraint firstAttribute="trailing" secondItem="D9b-G2-Dg6" secondAttribute="trailing" id="PeH-FT-dax"/>
                                                 <constraint firstAttribute="trailing" secondItem="9xQ-Os-iyx" secondAttribute="trailing" constant="15" id="ck3-o7-vjU"/>
                                                 <constraint firstItem="ahV-yu-0Jp" firstAttribute="top" secondItem="9xQ-Os-iyx" secondAttribute="bottom" constant="2" id="hO5-ly-93D"/>
                                                 <constraint firstItem="9xQ-Os-iyx" firstAttribute="top" secondItem="Vbr-Fa-kQ5" secondAttribute="top" constant="11" id="hjI-L6-feJ"/>
@@ -62,6 +72,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="commentLabel" destination="ahV-yu-0Jp" id="33M-3d-Sa3"/>
+                                            <outlet property="favoriteImage" destination="D9b-G2-Dg6" id="cjG-JC-h4u"/>
                                             <outlet property="nameLabel" destination="9xQ-Os-iyx" id="gds-68-CYd"/>
                                             <segue destination="yVa-ba-hx0" kind="show" identifier="detailBusStopSegue" id="qb4-gi-2gj"/>
                                         </connections>
