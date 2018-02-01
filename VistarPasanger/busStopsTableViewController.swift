@@ -32,13 +32,14 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
     @IBOutlet weak var busSegmentedControl: UISegmentedControl!
     
     //Массив остановок для работы с БД CoreData
-    var busStops: [BusStops] = []
-    
+    var allBusStops: [BusStops] = []
+
     var searchController: UISearchController!
     var locationManager:CLLocationManager!
-    var userLocation:CLLocation!
+    var userLocation:CLLocation = CLLocation(latitude: 0.0, longitude: 0.0)
     
     //Вспомогательные массивы
+    var busStops: [BusStops] = []
     var filterdResoultArray: [BusStops] = []
     var nearableBusStops: [BusStops] = []
     
@@ -51,11 +52,13 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
         let value = busSegmentedControl.selectedSegmentIndex
         switch value {
         case 0:
-            print(0)
+            busStops = nearableBusStops
+            tableView.reloadData()
         case 1:
             print(1)
         case 2:
-            print(2)
+            busStops = allBusStops
+            tableView.reloadData()
         default:
             break
         }
@@ -75,16 +78,16 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
         let session = URLSession.shared
         session.dataTask(with: request) { (data, response, erroe) in
             if let response = response {
-               // print(response)
+                print(response)
             }
             guard let data = data else {return}
             
             do{
-                let busStops = try JSONDecoder().decode(busStopsResponce.self, from: data)
-                if UserDefaults.standard.integer(forKey: "BusHash") != busStops.hash {
+                let allbusStops = try JSONDecoder().decode(busStopsResponce.self, from: data)
+                if UserDefaults.standard.integer(forKey: "BusHash") != allbusStops.hash {
                     self.deleteAllRecordsAboutBusStops()
-                    UserDefaults.standard.set(busStops.hash, forKey: "BusHash")
-                    self.reloadTableViewDataAndSaveInCoreData(allBusStops: busStops)
+                    UserDefaults.standard.set(allbusStops.hash, forKey: "BusHash")
+                    self.reloadTableViewDataAndSaveInCoreData(allBusStops: allbusStops)
                 }
             } catch {
                 print(error)
@@ -98,7 +101,7 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
         DispatchQueue.main.async {
             for i in 0...allBusStops.stops!.values.count-1{
                 self.saveData(busStops: Array(allBusStops.stops!.values)[i])
-                self.busStops[i].isFavorite = false
+                self.allBusStops[i].isFavorite = false
             }
             self.tableView.reloadData()
             
@@ -120,7 +123,7 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
         
         do {
             try context.save()
-            self.busStops.append(taskObject)
+            self.allBusStops.append(taskObject)
         }
         catch {
             print(error.localizedDescription)
@@ -158,7 +161,7 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
         
         let fetchRequest: NSFetchRequest<BusStops> = BusStops.fetchRequest()
         do {
-            busStops = try context.fetch(fetchRequest)
+            allBusStops = try context.fetch(fetchRequest)
         } catch {print(error.localizedDescription)}
     }
     
@@ -343,14 +346,11 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let userLocation:CLLocation = locations[0] as CLLocation
-        
-        // Call stopUpdatingLocation() to stop listening for location updates,
-        // other wise this function will be called every time when user location changes.
-        manager.stopUpdatingLocation()
+        if (userLocation.distance(from: self.userLocation)>50){
         self.userLocation = userLocation
         filterArrayByLocation(distance: 500)
-      //  print("user latitude = \(userLocation.coordinate.latitude)")
-       // print("user longitude = \(userLocation.coordinate.longitude)")
+        tableView.reloadData()
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error)
@@ -360,10 +360,12 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
     
     
     func filterArrayByLocation(distance: Double){
-        for i in 0...busStops.count-1 {
-            if (getDistanceBetweenPoints(firstLocatin: userLocation, secondLan: busStops[i].lat, secondLon: busStops[i].lon) <= distance){
-                nearableBusStops.append(busStops[i])
-                print(busStops[i])
+        if (allBusStops.count != 0){
+        nearableBusStops = []
+        for i in 0...allBusStops.count-1 {
+            if (getDistanceBetweenPoints(firstLocatin: userLocation, secondLan: allBusStops[i].lat, secondLon: allBusStops[i].lon) <= distance){
+                nearableBusStops.append(allBusStops[i])
+                }
             }
         }
     }
