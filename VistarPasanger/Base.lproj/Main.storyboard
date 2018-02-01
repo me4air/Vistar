@@ -173,7 +173,7 @@
                                 </prototypes>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Описание" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uk3-Vz-0qt">
-                                <rect key="frame" x="0.0" y="123.5" width="375" height="18"/>
+                                <rect key="frame" x="0.0" y="119.5" width="375" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="uk3-Vz-0qt" secondAttribute="height" multiplier="125:6" id="U3L-4S-2ae"/>
                                 </constraints>
@@ -198,7 +198,7 @@
                             <constraint firstItem="mRG-3R-pQY" firstAttribute="leading" secondItem="kAK-n7-aEa" secondAttribute="leading" id="7VZ-jx-g5q"/>
                             <constraint firstItem="mRG-3R-pQY" firstAttribute="top" secondItem="kAK-n7-aEa" secondAttribute="top" constant="74" id="99K-lN-3Uo"/>
                             <constraint firstItem="mRG-3R-pQY" firstAttribute="trailing" secondItem="kAK-n7-aEa" secondAttribute="trailing" id="9Vt-Lh-1nw"/>
-                            <constraint firstItem="uk3-Vz-0qt" firstAttribute="top" secondItem="RsS-Wc-pLd" secondAttribute="bottom" constant="2" id="BPO-sE-C9f"/>
+                            <constraint firstItem="uk3-Vz-0qt" firstAttribute="top" secondItem="RsS-Wc-pLd" secondAttribute="bottom" constant="-2" id="BPO-sE-C9f"/>
                             <constraint firstItem="ahG-Hw-j5R" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="kAK-n7-aEa" secondAttribute="trailing" id="EpV-RB-kNL"/>
                             <constraint firstItem="mRG-3R-pQY" firstAttribute="bottom" secondItem="kAK-n7-aEa" secondAttribute="bottom" id="HZJ-WI-RsF"/>
                             <constraint firstItem="RsS-Wc-pLd" firstAttribute="top" secondItem="kAK-n7-aEa" secondAttribute="top" constant="25" id="Ptn-zB-Hsn"/>

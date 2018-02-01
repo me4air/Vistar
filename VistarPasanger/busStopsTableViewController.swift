@@ -182,7 +182,6 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.estimatedRowHeight = 85
         tableView.rowHeight = UITableViewAutomaticDimension
         setupNavigationBar()
         definesPresentationContext = true
