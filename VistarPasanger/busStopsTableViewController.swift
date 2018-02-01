@@ -26,6 +26,8 @@ struct BusStop: Decodable {
 }
 
 
+//Основной класс
+
 class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
@@ -33,7 +35,7 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
     
     //Массив остановок для работы с БД CoreData
     var allBusStops: [BusStops] = []
-
+    
     var searchController: UISearchController!
     var locationManager:CLLocationManager!
     var userLocation:CLLocation = CLLocation(latitude: 0.0, longitude: 0.0)
@@ -42,11 +44,12 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
     var busStops: [BusStops] = []
     var filterdResoultArray: [BusStops] = []
     var nearableBusStops: [BusStops] = []
+    var favorietsBusStops: [BusStops] = []
     
     var userLon: Double = 0.0
     var userLat: Double = 0.0
     
-    
+    //IBAction реагирующий на смену SegmentedControll
     
     @IBAction func busSegmentValueChanged(_ sender: Any) {
         let value = busSegmentedControl.selectedSegmentIndex
@@ -55,7 +58,9 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
             busStops = nearableBusStops
             tableView.reloadData()
         case 1:
-            print(1)
+            filterByFavoriets()
+            busStops = favorietsBusStops
+            tableView.reloadData()
         case 2:
             busStops = allBusStops
             tableView.reloadData()
@@ -63,7 +68,7 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
             break
         }
     }
-    
+    // MARK: - Parsing
     //Функция получения данных о остановках с сервера
     func getBusStopsDataFromServer() {
         
@@ -95,6 +100,8 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
             }.resume()
         return
     }
+    
+    // MARK: - CoreData
     
     //Обновляем табличку и сохраняем данные в CoreData когда сервер нам что-то пришлет
     func reloadTableViewDataAndSaveInCoreData(allBusStops: busStopsResponce){
@@ -156,22 +163,21 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
     override func viewWillAppear(_ animated: Bool) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
-        
         determineMyCurrentLocation()
-        
         let fetchRequest: NSFetchRequest<BusStops> = BusStops.fetchRequest()
         do {
             allBusStops = try context.fetch(fetchRequest)
         } catch {print(error.localizedDescription)}
     }
     
+    // Фильт для поиска
     func filterContentFor (searchText text: String){
         filterdResoultArray = busStops.filter({ (busStop) -> Bool in
             return (busStop.name?.lowercased().contains(text.lowercased()))!
         })
     }
     
-    
+    //Что делаем когда view загрузился
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
@@ -192,7 +198,7 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: iOS 11
+    // MARK: - iOS 11
     
     func setupNavigationBar() {
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -219,9 +225,39 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
         }
     }
     
+    // Убираем выделение с нажатой ячейки
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    // Добавить в избранное по свайпу слева на право
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        var title = "В избранные"
+        var stopToFavorite: BusStops
+        if searchController.isActive && searchController.searchBar.text != "" {
+            stopToFavorite = filterdResoultArray[indexPath.row]
+        } else {
+            stopToFavorite = busStops[indexPath.row]
+        }
+        if stopToFavorite.isFavorite == true {
+            title = "Убрать из избранного"
+        }
+        let favorite = UIContextualAction(style: .normal, title: title) { (action, view, sucsess) in
+            self.favorietsAction(stopToFavorite: stopToFavorite)
+        }
+        
+        if stopToFavorite.isFavorite == true {
+            favorite.backgroundColor = #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1)
+        } else {
+            favorite.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
+        }
+        
+        return UISwipeActionsConfiguration(actions: [favorite])
+    }
+    
+    //добавить в избранное по свайпу справа на лево
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         var title = "В избранные"
@@ -235,32 +271,42 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
         if stopToFavorite.isFavorite == true {
             title = "Убрать из избранного"
         }
-        let favorite = UITableViewRowAction(style: .default, title: title) { (action, indexPath) in
-            if stopToFavorite.isFavorite != true{
-                stopToFavorite.isFavorite = true
-                
-            }
-            else{
-                stopToFavorite.isFavorite = false
-            }
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            let context = appDelegate.persistentContainer.viewContext
-                let objectToChange = stopToFavorite
-                context.refresh(objectToChange, mergeChanges: true)
-                do {
-                    try context.save()
-                } catch {
-                    print(error.localizedDescription)
-                }
-            self.tableView.reloadData()
+        let favorite = UITableViewRowAction(style: .normal, title: title) { (action, indexPath) in
+            self.favorietsAction(stopToFavorite: stopToFavorite)
         }
+        
         if stopToFavorite.isFavorite == true {
-            favorite.backgroundColor = #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)
+            favorite.backgroundColor = #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1)
         } else {
             favorite.backgroundColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
         }
         
         return [favorite]
+    }
+    
+    // action for cellAction
+    
+    func favorietsAction(stopToFavorite: BusStops) {
+        if stopToFavorite.isFavorite != true{
+            stopToFavorite.isFavorite = true
+            
+        }
+        else{
+            stopToFavorite.isFavorite = false
+        }
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let objectToChange = stopToFavorite
+        context.refresh(objectToChange, mergeChanges: true)
+        do {
+            try context.save()
+        } catch {
+            print(error.localizedDescription)
+        }
+        if self.busSegmentedControl.selectedSegmentIndex == 1{
+            busSegmentValueChanged((Any).self)
+        }
+        self.tableView.reloadData()
     }
     
     // Получаем Cell для оборажения из поиска
@@ -302,7 +348,7 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
         return cell
     }
     
-    
+    //  MARK: - Segue
     
     // Готовимся к переходу по detailBusStopSegue
     
@@ -324,8 +370,22 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
         }
     }
     
-    // MARK : Location
+    // MARK: - Filter
     
+    func filterByFavoriets(){
+        favorietsBusStops = []
+        if allBusStops.count != 0 {
+            for i in 0...allBusStops.count-1{
+                if allBusStops[i].isFavorite {
+                    favorietsBusStops.append(allBusStops[i])
+                }
+            }
+        }
+    }
+    
+    // MARK: - Location
+    
+    //настраиваем сервис получения геопозиции
     func determineMyCurrentLocation() {
         locationManager = CLLocationManager()
         locationManager.delegate = self
@@ -334,22 +394,24 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
         
         if CLLocationManager.locationServicesEnabled() {
             locationManager.startUpdatingLocation()
-            //locationManager.startUpdatingHeading()
         }
     }
     
+    //получаем расстояние в метрах между текущим положением и локацией с координатами
     func getDistanceBetweenPoints(firstLocatin: CLLocation, secondLan: Double, secondLon: Double) -> Double{
         let coordinate2 = CLLocation(latitude: secondLan, longitude: secondLon)
         let distanceInMeters = firstLocatin.distance(from: coordinate2)
         return distanceInMeters
     }
     
+    //вызывается при изменении геопозиции
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let userLocation:CLLocation = locations[0] as CLLocation
         if (userLocation.distance(from: self.userLocation)>50){
-        self.userLocation = userLocation
-        filterArrayByLocation(distance: 500)
-        tableView.reloadData()
+            self.userLocation = userLocation
+            filterArrayByLocation(distance: 500)
+            busStops=nearableBusStops
+            tableView.reloadData()
         }
     }
     
@@ -358,13 +420,13 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
         print("Error \(error)")
     }
     
-    
+    //создаем массив билжайших остановок
     func filterArrayByLocation(distance: Double){
         if (allBusStops.count != 0){
-        nearableBusStops = []
-        for i in 0...allBusStops.count-1 {
-            if (getDistanceBetweenPoints(firstLocatin: userLocation, secondLan: allBusStops[i].lat, secondLon: allBusStops[i].lon) <= distance){
-                nearableBusStops.append(allBusStops[i])
+            nearableBusStops = []
+            for i in 0...allBusStops.count-1 {
+                if (getDistanceBetweenPoints(firstLocatin: userLocation, secondLan: allBusStops[i].lat, secondLon: allBusStops[i].lon) <= distance){
+                    nearableBusStops.append(allBusStops[i])
                 }
             }
         }
@@ -373,6 +435,7 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
     
 }
 
+//реализуем расширение для фильтрации по строке поиске
 extension busStopsTableViewController: UISearchResultsUpdating{
     func updateSearchResults(for searchController: UISearchController) {
         filterContentFor(searchText: searchController.searchBar.text!)

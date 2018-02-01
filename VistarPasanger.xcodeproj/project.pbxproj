@@ -18,7 +18,6 @@
 		A0731950201B4C7F009761CB /* DetailBusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A073194F201B4C7F009761CB /* DetailBusViewController.swift */; };
 		A08C2DAF202098F600F12A31 /* busArrivalTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2DAE202098F600F12A31 /* busArrivalTableViewCell.swift */; };
 		A08C2DB2202313C800F12A31 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A08C2DB1202313C800F12A31 /* MapKit.framework */; };
-		A08C2DB42023143500F12A31 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A08C2DB32023143500F12A31 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,7 +34,6 @@
 		A073194F201B4C7F009761CB /* DetailBusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailBusViewController.swift; sourceTree = "<group>"; };
 		A08C2DAE202098F600F12A31 /* busArrivalTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = busArrivalTableViewCell.swift; sourceTree = "<group>"; };
 		A08C2DB1202313C800F12A31 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
-		A08C2DB32023143500F12A31 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,7 +51,6 @@
 		A031A0FE2019F50C00AC85DF = {
 			isa = PBXGroup;
 			children = (
-				A08C2DB32023143500F12A31 /* Default-568h@2x.png */,
 				A031A1092019F50C00AC85DF /* VistarPasanger */,
 				A031A1082019F50C00AC85DF /* Products */,
 				A08C2DB0202313C800F12A31 /* Frameworks */,
@@ -161,7 +158,6 @@
 				A031A1202019F67800AC85DF /* .gitignore in Resources */,
 				A031A1182019F50C00AC85DF /* LaunchScreen.storyboard in Resources */,
 				A031A1152019F50C00AC85DF /* Assets.xcassets in Resources */,
-				A08C2DB42023143500F12A31 /* Default-568h@2x.png in Resources */,
 				A031A1102019F50C00AC85DF /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
