@@ -56,17 +56,16 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
         switch value {
         case 0:
             busStops = nearableBusStops
-            tableView.reloadData()
         case 1:
             filterByFavoriets()
             busStops = favorietsBusStops
-            tableView.reloadData()
         case 2:
             busStops = allBusStops
-            tableView.reloadData()
         default:
             break
         }
+        updateSearchResults(for: searchController)
+        tableView.reloadData()
     }
     // MARK: - Parsing
     //Функция получения данных о остановках с сервера
@@ -107,13 +106,19 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
     func reloadTableViewDataAndSaveInCoreData(allBusStops: busStopsResponce){
         DispatchQueue.main.async {
             for i in 0...allBusStops.stops!.values.count-1{
-                self.saveData(busStops: Array(allBusStops.stops!.values)[i])
-                self.allBusStops[i].isFavorite = false
+                if (Array(allBusStops.stops!.values)[i].name!.count > 0){
+                    self.saveData(busStops: Array(allBusStops.stops!.values)[i])
+                }
             }
+            self.allBusStops = self.allBusStops.sorted(by: { (this, that) -> Bool in
+                if (this.name! <= that.name!){
+                    return true
+                } else {
+                    return false
+                }
+            })
             self.tableView.reloadData()
-            
         }
-        
     }
     
     //Сохранение данных в CoreData
@@ -124,17 +129,18 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
         let taskObject = NSManagedObject(entity: entity!, insertInto: context) as! BusStops
         taskObject.comment = busStops.comment
         taskObject.id = Double(busStops.id!)
-        taskObject.name = busStops.name
+        taskObject.name = busStops.name?.trimmingCharacters(in: .whitespaces)
         taskObject.lat = busStops.lat!
         taskObject.lon = busStops.lon!
-        
+        taskObject.isFavorite = false
+    
         do {
             try context.save()
             self.allBusStops.append(taskObject)
         }
         catch {
             print(error.localizedDescription)
-        } 
+            }
         
     }
     
@@ -168,6 +174,13 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
         do {
             allBusStops = try context.fetch(fetchRequest)
         } catch {print(error.localizedDescription)}
+        allBusStops = allBusStops.sorted(by: { (this, that) -> Bool in
+            if (this.name! <= that.name!){
+                return true
+            } else {
+                return false
+            }
+        })
     }
     
     // Фильт для поиска
@@ -283,7 +296,7 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
         return [favorite]
     }
     
-    // action for cellAction
+    // action для cellAction
     
     func favorietsAction(stopToFavorite: BusStops) {
         if stopToFavorite.isFavorite != true{
@@ -355,9 +368,11 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
         if segue.identifier == "detailBusStopSegue" {
             if let indexPath = tableView.indexPathForSelectedRow {
                 let dvc = segue.destination  as! DetailBusViewController
+                print(busStopToDisplayAT(indexPath: indexPath))
                 
                 if let name = busStopToDisplayAT(indexPath: indexPath).name {
                     dvc.busStopName = name
+                    print(name)
                 }
                 if let comment = busStopToDisplayAT(indexPath: indexPath).comment {
                     dvc.busStopComment = comment
@@ -434,7 +449,7 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
     
 }
 
-//реализуем расширение для фильтрации по строке поиске
+//реализуем расширение для фильтрации по строке поиска
 extension busStopsTableViewController: UISearchResultsUpdating{
     func updateSearchResults(for searchController: UISearchController) {
         filterContentFor(searchText: searchController.searchBar.text!)
