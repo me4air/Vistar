@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import CoreLocation
 
 //Реализуем 2 Decodable структуры, чтобы swift сам распарсил из JSON
 
@@ -25,16 +26,24 @@ struct BusStop: Decodable {
 }
 
 
-class busStopsTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var busSegmentedControl: UISegmentedControl!
     
     //Массив остановок для работы с БД CoreData
     var busStops: [BusStops] = []
+    
     var searchController: UISearchController!
+    var locationManager:CLLocationManager!
+    var userLocation:CLLocation!
+    
+    //Вспомогательные массивы
     var filterdResoultArray: [BusStops] = []
     var nearableBusStops: [BusStops] = []
+    
+    var userLon: Double = 0.0
+    var userLat: Double = 0.0
     
     
     
@@ -66,7 +75,7 @@ class busStopsTableViewController: UIViewController, UITableViewDelegate, UITabl
         let session = URLSession.shared
         session.dataTask(with: request) { (data, response, erroe) in
             if let response = response {
-                print(response)
+               // print(response)
             }
             guard let data = data else {return}
             
@@ -92,6 +101,7 @@ class busStopsTableViewController: UIViewController, UITableViewDelegate, UITabl
                 self.busStops[i].isFavorite = false
             }
             self.tableView.reloadData()
+            
         }
         
     }
@@ -143,6 +153,8 @@ class busStopsTableViewController: UIViewController, UITableViewDelegate, UITabl
     override func viewWillAppear(_ animated: Bool) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
+        
+        determineMyCurrentLocation()
         
         let fetchRequest: NSFetchRequest<BusStops> = BusStops.fetchRequest()
         do {
@@ -309,6 +321,52 @@ class busStopsTableViewController: UIViewController, UITableViewDelegate, UITabl
         }
     }
     
+    // MARK : Location
+    
+    func determineMyCurrentLocation() {
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestAlwaysAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.startUpdatingLocation()
+            //locationManager.startUpdatingHeading()
+        }
+    }
+    
+    func getDistanceBetweenPoints(firstLocatin: CLLocation, secondLan: Double, secondLon: Double) -> Double{
+        let coordinate2 = CLLocation(latitude: secondLan, longitude: secondLon)
+        let distanceInMeters = firstLocatin.distance(from: coordinate2)
+        return distanceInMeters
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let userLocation:CLLocation = locations[0] as CLLocation
+        
+        // Call stopUpdatingLocation() to stop listening for location updates,
+        // other wise this function will be called every time when user location changes.
+        manager.stopUpdatingLocation()
+        self.userLocation = userLocation
+        filterArrayByLocation(distance: 500)
+      //  print("user latitude = \(userLocation.coordinate.latitude)")
+       // print("user longitude = \(userLocation.coordinate.longitude)")
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error)
+    {
+        print("Error \(error)")
+    }
+    
+    
+    func filterArrayByLocation(distance: Double){
+        for i in 0...busStops.count-1 {
+            if (getDistanceBetweenPoints(firstLocatin: userLocation, secondLan: busStops[i].lat, secondLon: busStops[i].lon) <= distance){
+                nearableBusStops.append(busStops[i])
+                print(busStops[i])
+            }
+        }
+    }
     
     
 }

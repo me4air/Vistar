@@ -7,6 +7,12 @@
     <key>NSAllowsArbitraryLoads</key>
     <true/>
 </dict>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Программа использует данные GPS, чтобы помочь вам найти ближайшие остановки</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Программа использует данные GPS, чтобы помочь вам найти ближайшие остановки</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Программа использует данные GPS, чтобы помочь вам найти ближайшие остановки</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>CFBundleDevelopmentRegion</key>
