@@ -9,36 +9,6 @@
 import UIKit
 import CoreData
 
-struct Responce: Decodable {
-    var busArrival: [BusAririvals]?
-    var status: String
-}
-
-struct BusAririvals: Decodable {
-    var arrivals: [Arrivals]?
-    var fromStopId: Int?
-    var toStopId: Int?
-}
-
-struct Arrivals: Decodable, Equatable {
-    static func ==(lhs: Arrivals, rhs: Arrivals) -> Bool {
-        if ((lhs.arrivalTime == rhs.arrivalTime) && (lhs.busRoute == rhs.busRoute)) {
-            return true
-        }
-        else {return false}
-    }
-    
-    var arrivalTime: Int?
-    var busRoute: String?
-    var lat: Double?
-    var lon: Double?
-    var rideTime: Int?
-}
-
-struct ArivalsToDislplayData {
-    var busName: String?
-    var arivalTimes: [Int]?
-}
 
 class DetailBusViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -79,6 +49,10 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, UITableVie
         // Do any additional setup after loading the view.
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        displayArivalsData = []
+        arivalsData = []
+    }
     func getBusStopList(){
         var busStops: [BusStops] = []
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -183,7 +157,6 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, UITableVie
                 self.noInformationLabel.isHidden = false
             }
             self.reorganizeDataForDisplay()
-            print(self.displayArivalsData)
             self.tableView.reloadData()
             self.activityIndicator.stopAnimating()
         }
@@ -215,7 +188,6 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, UITableVie
             for i in 1...displayArivalsData[indexPath.row].arivalTimes!.count-1{
                 aditionalTimes = aditionalTimes + String(displayArivalsData[indexPath.row].arivalTimes![i]/60) + " Мин. \n"
             }}
-            print(displayArivalsData.count)
             cell.arivalTime.text = String(describing: displayArivalsData[indexPath.row].arivalTimes![0]/60) + " Мин."
             cell.busName.text = String(describing: displayArivalsData[indexPath.row].busName!)
             cell.aditionalrivalTime.text = aditionalTimes
