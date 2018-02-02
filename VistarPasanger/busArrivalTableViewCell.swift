@@ -10,6 +10,7 @@ import UIKit
 
 class busArrivalTableViewCell: UITableViewCell {
     @IBOutlet weak var busName: UILabel!
+    @IBOutlet weak var aditionalrivalTime: UILabel!
     @IBOutlet weak var arivalTime: UILabel!
     
     override func awakeFromNib() {

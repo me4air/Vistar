@@ -35,6 +35,11 @@ struct Arrivals: Decodable, Equatable {
     var rideTime: Int?
 }
 
+struct ArivalsToDislplayData {
+    var busName: String?
+    var arivalTimes: [Int]?
+}
+
 class DetailBusViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var noInformationLabel: UILabel!
@@ -49,6 +54,7 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, UITableVie
     var bustStopStartPoint = ""
     var busStopList: [String] = []
     var arivalsData: [Arrivals] = []
+    var displayArivalsData: [ArivalsToDislplayData] = []
     
     override func viewWillAppear(_ animated: Bool) {
         getBusStopList()
@@ -67,6 +73,8 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, UITableVie
         busStopCommentLabe.text = busStopComment
         activityIndicator.hidesWhenStopped = true
         activityIndicator.startAnimating()
+        tableView.estimatedRowHeight = 80
+        tableView.rowHeight = UITableViewAutomaticDimension
         
         // Do any additional setup after loading the view.
     }
@@ -124,9 +132,39 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, UITableVie
                 }
             }
             self.arivalsData = arivalsData.removeDuplicates()
-            print(arivalsData)
         }
         
+    }
+    
+    func reorganizeDataForDisplay(){
+        if arivalsData.count != 0 {
+            displayArivalsData.append(ArivalsToDislplayData(busName: arivalsData[0].busRoute, arivalTimes: []))
+            for i in 0...arivalsData.count-1{
+                if !(isInArray(displayArivals: displayArivalsData, busName: arivalsData[i].busRoute!)){
+                    displayArivalsData.append(ArivalsToDislplayData(busName: arivalsData[i].busRoute, arivalTimes: []))
+                }
+            }
+            for i in 0...displayArivalsData.count-1{
+                for j in 0...arivalsData.count-1{
+                    if displayArivalsData[i].busName == arivalsData[j].busRoute{
+                        displayArivalsData[i].arivalTimes?.append(arivalsData[j].arrivalTime!)
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    func isInArray(displayArivals: [ArivalsToDislplayData], busName: String) -> Bool{
+        var answer = false
+        if displayArivals.count > 0 {
+            for i in 0...displayArivals.count-1{
+                if displayArivals[i].busName == busName{
+                    answer = true
+                }
+            }
+        }
+        return answer
     }
     
     override func didReceiveMemoryWarning() {
@@ -144,6 +182,8 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, UITableVie
             else {
                 self.noInformationLabel.isHidden = false
             }
+            self.reorganizeDataForDisplay()
+            print(self.displayArivalsData)
             self.tableView.reloadData()
             self.activityIndicator.stopAnimating()
         }
@@ -154,8 +194,8 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if arivalsData.count != 0 {
-            return (arivalsData.removeDuplicates().count)
+        if displayArivalsData.count != 0 {
+            return (displayArivalsData.count)
         } else{
             return 0
         }
@@ -168,10 +208,17 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! busArrivalTableViewCell
-        if arivalsData.count != 0 {
-            print(arivalsData.count)
-            cell.arivalTime.text = String(describing: arivalsData[indexPath.row].arrivalTime!/60) + " Мин."
-            cell.busName.text = String(describing: arivalsData[indexPath.row].busRoute!)
+        var aditionalTimes = " "
+        if displayArivalsData.count != 0{
+        if displayArivalsData[indexPath.row].arivalTimes!.count >= 2 {
+            aditionalTimes = ""
+            for i in 1...displayArivalsData[indexPath.row].arivalTimes!.count-1{
+                aditionalTimes = aditionalTimes + String(displayArivalsData[indexPath.row].arivalTimes![i]/60) + " Мин. \n"
+            }}
+            print(displayArivalsData.count)
+            cell.arivalTime.text = String(describing: displayArivalsData[indexPath.row].arivalTimes![0]/60) + " Мин."
+            cell.busName.text = String(describing: displayArivalsData[indexPath.row].busName!)
+            cell.aditionalrivalTime.text = aditionalTimes
         } else{
             cell.arivalTime.text = ""
             cell.busName.text = ""

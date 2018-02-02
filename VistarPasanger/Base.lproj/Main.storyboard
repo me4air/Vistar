@@ -142,30 +142,40 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="86.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="12 минут" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X00-pv-tbn">
-                                                    <rect key="frame" x="143.5" y="33" width="216.5" height="30"/>
-                                                    <fontDescription key="fontDescription" name="AppleSDGothicNeo-Medium" family="Apple SD Gothic Neo" pointSize="25"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="123А" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kiU-ve-84k">
+                                                    <rect key="frame" x="15" y="32" width="120" height="32"/>
+                                                    <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="30"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="123А" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kiU-ve-84k">
-                                                    <rect key="frame" x="15" y="32" width="62.5" height="32"/>
-                                                    <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="30"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="25 минут" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wIx-my-xb4">
+                                                    <rect key="frame" x="143" y="60" width="62.5" height="19.5"/>
+                                                    <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="16"/>
+                                                    <color key="textColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="12 минут" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X00-pv-tbn">
+                                                    <rect key="frame" x="143" y="27" width="161" height="32"/>
+                                                    <fontDescription key="fontDescription" name="AppleSDGothicNeo-Medium" family="Apple SD Gothic Neo" pointSize="22"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="X00-pv-tbn" firstAttribute="top" secondItem="oWp-It-ruC" secondAttribute="top" constant="33" id="Ajk-mN-K98"/>
-                                                <constraint firstAttribute="trailing" secondItem="X00-pv-tbn" secondAttribute="trailing" constant="15" id="Hf7-gg-e3o"/>
+                                                <constraint firstItem="X00-pv-tbn" firstAttribute="top" secondItem="oWp-It-ruC" secondAttribute="top" constant="27" id="Ajk-mN-K98"/>
+                                                <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="X00-pv-tbn" secondAttribute="trailing" constant="71" id="Hf7-gg-e3o"/>
                                                 <constraint firstAttribute="bottom" secondItem="kiU-ve-84k" secondAttribute="bottom" constant="22.5" id="Kq1-6d-wqV"/>
+                                                <constraint firstAttribute="bottom" secondItem="wIx-my-xb4" secondAttribute="bottom" constant="7.5" id="MBm-2P-Geb"/>
+                                                <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="wIx-my-xb4" secondAttribute="trailing" constant="169.5" id="S2U-a4-oaA"/>
                                                 <constraint firstItem="kiU-ve-84k" firstAttribute="top" secondItem="oWp-It-ruC" secondAttribute="top" constant="32" id="WAo-oX-ry1"/>
-                                                <constraint firstAttribute="bottom" secondItem="X00-pv-tbn" secondAttribute="bottom" constant="23.5" id="cmA-Eh-ebE"/>
-                                                <constraint firstItem="X00-pv-tbn" firstAttribute="leading" relation="lessThanOrEqual" secondItem="kiU-ve-84k" secondAttribute="trailing" constant="66" id="kAF-M3-TMg"/>
+                                                <constraint firstItem="wIx-my-xb4" firstAttribute="leading" relation="lessThanOrEqual" secondItem="kiU-ve-84k" secondAttribute="trailing" constant="8" symbolic="YES" id="d5n-vp-wAN"/>
+                                                <constraint firstItem="X00-pv-tbn" firstAttribute="leading" relation="lessThanOrEqual" secondItem="kiU-ve-84k" secondAttribute="trailing" constant="8" id="kAF-M3-TMg"/>
+                                                <constraint firstItem="wIx-my-xb4" firstAttribute="top" secondItem="X00-pv-tbn" secondAttribute="bottom" constant="1" id="tZH-oy-936"/>
                                                 <constraint firstItem="kiU-ve-84k" firstAttribute="leading" secondItem="oWp-It-ruC" secondAttribute="leading" constant="15" id="y5t-1X-XV6"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="aditionalrivalTime" destination="wIx-my-xb4" id="7sP-PU-w13"/>
                                             <outlet property="arivalTime" destination="X00-pv-tbn" id="66M-wH-c8V"/>
                                             <outlet property="busName" destination="kiU-ve-84k" id="Sec-yh-gjg"/>
                                         </connections>
@@ -222,7 +232,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3A4-bj-4Ht" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1241" y="116"/>
+            <point key="canvasLocation" x="1240.8" y="115.59220389805098"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="vLy-ga-zA5">
