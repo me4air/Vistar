@@ -9,23 +9,6 @@ import UIKit
 import CoreData
 import CoreLocation
 
-//Реализуем 2 Decodable структуры, чтобы swift сам распарсил из JSON
-
-struct busStopsResponce: Decodable {
-    var status: String?
-    var hash: Int?
-    var stops: Dictionary<String, BusStop>?
-}
-
-struct BusStop: Decodable {
-    var comment: String?
-    var id: Int?
-    var lat: Double?
-    var lon: Double?
-    var name: String?
-}
-
-
 //Основной класс
 
 class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, UITableViewDelegate, UITableViewDataSource {
@@ -368,11 +351,9 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
         if segue.identifier == "detailBusStopSegue" {
             if let indexPath = tableView.indexPathForSelectedRow {
                 let dvc = segue.destination  as! DetailBusViewController
-                print(busStopToDisplayAT(indexPath: indexPath))
                 
                 if let name = busStopToDisplayAT(indexPath: indexPath).name {
                     dvc.busStopName = name
-                    print(name)
                 }
                 if let comment = busStopToDisplayAT(indexPath: indexPath).comment {
                     dvc.busStopComment = comment
@@ -380,6 +361,10 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
                 let busStart = String(Int(busStopToDisplayAT(indexPath: indexPath).id))
                 dvc.bustStopStartPoint = busStart
                 
+                var busStopCoordinates: [Double] = []
+                busStopCoordinates.append(busStopToDisplayAT(indexPath: indexPath).lat)
+                busStopCoordinates.append(busStopToDisplayAT(indexPath: indexPath).lon)
+                dvc.busStopCoordinates = busStopCoordinates
             }
         }
     }
