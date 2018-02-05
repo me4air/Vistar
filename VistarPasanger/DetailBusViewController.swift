@@ -13,13 +13,35 @@ import MapKit
 
 class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewDelegate, UITableViewDataSource {
     
+
+    @IBOutlet weak var mapHeight: NSLayoutConstraint!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var noInformationLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var busStopNameLabel: UILabel!
     @IBOutlet weak var busStopCommentLabe: UILabel!
+    @IBOutlet weak var downButton: UIButton!
     
+    var isMapSmall = true
+    var mapSavedSize = 0.0
+    @IBAction func downButtonPresed(_ sender: Any) {
+        if isMapSmall {
+            mapSavedSize = Double(mapHeight.constant)
+            mapHeight.constant = self.view.frame.height-280
+            downButton.setImage( UIImage.init(named: "upButton"), for: .normal)
+            isMapSmall = false
+        }
+        else {
+            mapHeight.constant = CGFloat(mapSavedSize)
+            downButton.setImage( UIImage.init(named: "downButton"), for: .normal)
+            isMapSmall = true
+        }
+        UIView.animate(withDuration: 0.3){
+            self.view.layoutIfNeeded()
+        }
+
+    }
     
     var busStopName = ""
     var busStopComment = ""
@@ -56,13 +78,20 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         mapView.addAnnotation(mapAnnotation)
         mapView.camera.centerCoordinate.latitude = busStopCoordinates[0]
         mapView.camera.centerCoordinate.longitude = busStopCoordinates[1]
-        mapView.camera.altitude = 600
+        mapView.camera.altitude = 800
+        mapView.camera.pitch = 50
+        downButton.alpha = 0.6
         // Do any additional setup after loading the view.
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         displayArivalsData = []
         arivalsData = []
+        self.mapView.annotations.forEach {
+            if !($0 is MKUserLocation) {
+                self.mapView.removeAnnotation($0)
+            }
+        }
     }
     func getBusStopList(){
         var busStops: [BusStops] = []
