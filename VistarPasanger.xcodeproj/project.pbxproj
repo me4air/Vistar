@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A0052279202862FB00550CFA /* BusPointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0052278202862FB00550CFA /* BusPointAnnotation.swift */; };
 		A031A10B2019F50C00AC85DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A031A10A2019F50C00AC85DF /* AppDelegate.swift */; };
 		A031A1102019F50C00AC85DF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A031A10E2019F50C00AC85DF /* Main.storyboard */; };
 		A031A1132019F50C00AC85DF /* VistarPasanger.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A031A1112019F50C00AC85DF /* VistarPasanger.xcdatamodeld */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A0052278202862FB00550CFA /* BusPointAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusPointAnnotation.swift; sourceTree = "<group>"; };
 		A031A1072019F50C00AC85DF /* VistarPasanger.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VistarPasanger.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A031A10A2019F50C00AC85DF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A031A10F2019F50C00AC85DF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 			children = (
 				A031A1212019FB6C00AC85DF /* busStopsTableViewController.swift */,
 				A073194F201B4C7F009761CB /* DetailBusViewController.swift */,
+				A0052278202862FB00550CFA /* BusPointAnnotation.swift */,
 				A031A10E2019F50C00AC85DF /* Main.storyboard */,
 				A031A10A2019F50C00AC85DF /* AppDelegate.swift */,
 				A073194D201B31DC009761CB /* BusStopTableViewCell.swift */,
@@ -181,6 +184,7 @@
 				A031A1132019F50C00AC85DF /* VistarPasanger.xcdatamodeld in Sources */,
 				A062A34720249BF000375A70 /* BusStopsDecodableStucts.swift in Sources */,
 				A031A10B2019F50C00AC85DF /* AppDelegate.swift in Sources */,
+				A0052279202862FB00550CFA /* BusPointAnnotation.swift in Sources */,
 				A08C2DAF202098F600F12A31 /* busArrivalTableViewCell.swift in Sources */,
 				A031A1222019FB6C00AC85DF /* busStopsTableViewController.swift in Sources */,
 			);

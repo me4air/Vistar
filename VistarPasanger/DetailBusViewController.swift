@@ -52,6 +52,7 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         activityIndicator.startAnimating()
         tableView.estimatedRowHeight = 80
         tableView.rowHeight = UITableViewAutomaticDimension
+        mapView.delegate = self
         mapView.addAnnotation(mapAnnotation)
         mapView.camera.centerCoordinate.latitude = busStopCoordinates[0]
         mapView.camera.centerCoordinate.longitude = busStopCoordinates[1]
@@ -88,16 +89,16 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         let session = URLSession.shared
         session.dataTask(with: request) { (data, response, erroe) in
             DispatchQueue.main.async {
-            if let response = response {
-                 print(response)
-            }
-            guard let data = data else {return}
-            do{
-                let busArivals = try JSONDecoder().decode(Responce.self, from: data)
-                self.reloadTableViewData()
-                self.filterBusStopsArrival(response: busArivals)
-            } catch {
-                print(error)
+                if let response = response {
+                    print(response)
+                }
+                guard let data = data else {return}
+                do{
+                    let busArivals = try JSONDecoder().decode(Responce.self, from: data)
+                    self.reloadTableViewData()
+                    self.filterBusStopsArrival(response: busArivals)
+                } catch {
+                    print(error)
                 }
                 
             }
@@ -109,7 +110,7 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
             for i in 0...arrivalCounts-1{
                 if let arrival = response.busArrival![i].arrivals {
                     for i in 0...arrival.count-1{
-                       let newArrival: Arrivals = Arrivals(arrivalTime: arrival[i].arrivalTime!, busRoute: arrival[i].busRoute!, lat: arrival[i].lat!, lon:  arrival[i].lon!, rideTime: arrival[i].rideTime!)
+                        let newArrival: Arrivals = Arrivals(arrivalTime: arrival[i].arrivalTime!, busRoute: arrival[i].busRoute!, lat: arrival[i].lat!, lon:  arrival[i].lon!, rideTime: arrival[i].rideTime!)
                         arivalsData.append(newArrival)
                         
                     }
@@ -174,15 +175,44 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
     }
     
     func reloadMapViewWithBuses(){
-            if self.arivalsData.count != 0 {
-                for i in 0...self.arivalsData.count-1{
-                    let busAnotation = MKPointAnnotation()
-                    busAnotation.coordinate.latitude = self.arivalsData[i].lat!
-                    busAnotation.coordinate.longitude = self.arivalsData[i].lon!
-                    busAnotation.title = self.arivalsData[i].busRoute
-                    self.mapView.addAnnotation(busAnotation)
-                }
+        if self.arivalsData.count != 0 {
+            for i in 0...self.arivalsData.count-1{
+               
+                let busAnotation = BusPointAnnotation()
+                busAnotation.coordinate.latitude = self.arivalsData[i].lat!
+                busAnotation.coordinate.longitude = self.arivalsData[i].lon!
+                busAnotation.title = self.arivalsData[i].busRoute
+                self.mapView.addAnnotation(busAnotation)
             }
+        }
+    }
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        let annotationView = MKAnnotationView(annotation: self.mapAnnotation, reuseIdentifier: "busStop")
+        if (annotation is BusPointAnnotation) {
+             annotationView.image = UIImage(named: "ridingbusIcon")
+        }
+        else {
+            if !annotation.isKind(of: MKUserLocation.self) {annotationView.image = UIImage(named: "busStopIcon")
+            } else{
+                annotationView.image = UIImage(named: "personIcon")
+            }
+            
+        }
+        annotationView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        let label = UILabel(frame: CGRect(x: 0, y: 60, width: 200, height: 50))
+        label.textAlignment = NSTextAlignment.center
+        label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 30)
+        label.textColor = #colorLiteral(red: 0.1712999683, green: 0.1712999683, blue: 0.1712999683, alpha: 1)
+        if !annotation.isKind(of: MKUserLocation.self) {
+            label.text = annotation.title!
+        } else{
+            label.text = "Вы здесь"   
+        }
+        label.sizeToFit()
+        label.center = CGPoint(x: label.center.x-label.frame.width/2+annotationView.frame.width, y: 80)
+        annotationView.addSubview(label)
+        return annotationView
     }
     
     
@@ -207,11 +237,11 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! busArrivalTableViewCell
         var aditionalTimes = " "
         if displayArivalsData.count != 0{
-        if displayArivalsData[indexPath.row].arivalTimes!.count >= 2 {
-            aditionalTimes = ""
-            for i in 1...displayArivalsData[indexPath.row].arivalTimes!.count-1{
-                aditionalTimes = aditionalTimes + String(displayArivalsData[indexPath.row].arivalTimes![i]/60) + " Мин. \n"
-            }}
+            if displayArivalsData[indexPath.row].arivalTimes!.count >= 2 {
+                aditionalTimes = ""
+                for i in 1...displayArivalsData[indexPath.row].arivalTimes!.count-1{
+                    aditionalTimes = aditionalTimes + String(displayArivalsData[indexPath.row].arivalTimes![i]/60) + " Мин. \n"
+                }}
             cell.arivalTime.text = String(describing: displayArivalsData[indexPath.row].arivalTimes![0]/60) + " Мин."
             cell.busName.text = String(describing: displayArivalsData[indexPath.row].busName!)
             cell.aditionalrivalTime.text = aditionalTimes
@@ -219,7 +249,7 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
             cell.arivalTime.text = ""
             cell.busName.text = ""
         }
-       
+        
         return cell
     }
     
