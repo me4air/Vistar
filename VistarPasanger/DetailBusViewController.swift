@@ -167,9 +167,22 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
                 self.noInformationLabel.isHidden = false
             }
             self.reorganizeDataForDisplay()
+            self.reloadMapViewWithBuses()
             self.tableView.reloadData()
             self.activityIndicator.stopAnimating()
         }
+    }
+    
+    func reloadMapViewWithBuses(){
+            if self.arivalsData.count != 0 {
+                for i in 0...self.arivalsData.count-1{
+                    let busAnotation = MKPointAnnotation()
+                    busAnotation.coordinate.latitude = self.arivalsData[i].lat!
+                    busAnotation.coordinate.longitude = self.arivalsData[i].lon!
+                    busAnotation.title = self.arivalsData[i].busRoute
+                    self.mapView.addAnnotation(busAnotation)
+                }
+            }
     }
     
     
