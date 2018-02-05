@@ -240,6 +240,21 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         }
         label.sizeToFit()
         label.center = CGPoint(x: label.center.x-label.frame.width/2+annotationView.frame.width, y: 80)
+        annotationView.layer.shadowColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        annotationView.layer.shadowRadius = 2
+        annotationView.layer.shadowOpacity = 0.5
+        annotationView.layer.shadowOffset = CGSize(width: 0, height: 2)
+        if (annotation is BusPointAnnotation) {
+           annotationView.layer.shadowPath = UIBezierPath(ovalIn: annotationView.bounds).cgPath
+        }
+        else {
+            if !annotation.isKind(of: MKUserLocation.self) {
+                annotationView.layer.shadowPath = UIBezierPath(rect: annotationView.bounds).cgPath
+            } else{
+                annotationView.layer.shadowPath = UIBezierPath(ovalIn: annotationView.bounds).cgPath
+            }
+            
+        }
         annotationView.addSubview(label)
         return annotationView
     }
