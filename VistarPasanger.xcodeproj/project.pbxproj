@@ -69,9 +69,9 @@
 			isa = PBXGroup;
 			children = (
 				A031A1212019FB6C00AC85DF /* busStopsTableViewController.swift */,
-				A031A10A2019F50C00AC85DF /* AppDelegate.swift */,
 				A073194F201B4C7F009761CB /* DetailBusViewController.swift */,
 				A031A10E2019F50C00AC85DF /* Main.storyboard */,
+				A031A10A2019F50C00AC85DF /* AppDelegate.swift */,
 				A073194D201B31DC009761CB /* BusStopTableViewCell.swift */,
 				A08C2DAE202098F600F12A31 /* busArrivalTableViewCell.swift */,
 				A031A1112019F50C00AC85DF /* VistarPasanger.xcdatamodeld */,

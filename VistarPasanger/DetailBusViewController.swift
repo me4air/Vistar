@@ -189,6 +189,7 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
     
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
