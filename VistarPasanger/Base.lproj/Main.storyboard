@@ -218,9 +218,9 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Остановка" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RsS-Wc-pLd">
-                                <rect key="frame" x="-50.5" y="89" width="476" height="33"/>
+                                <rect key="frame" x="0.0" y="89" width="375" height="33"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="RsS-Wc-pLd" secondAttribute="height" multiplier="375:26" id="bzO-2c-O84"/>
+                                    <constraint firstAttribute="width" secondItem="RsS-Wc-pLd" secondAttribute="height" multiplier="375:26" constant="-100.96153846153845" id="bzO-2c-O84"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="27"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
