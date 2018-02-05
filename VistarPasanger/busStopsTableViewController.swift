@@ -361,6 +361,10 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
                 let busStart = String(Int(busStopToDisplayAT(indexPath: indexPath).id))
                 dvc.bustStopStartPoint = busStart
                 
+                var busStopCoordinates: [Double] = []
+                busStopCoordinates.append(busStopToDisplayAT(indexPath: indexPath).lat)
+                busStopCoordinates.append(busStopToDisplayAT(indexPath: indexPath).lon)
+                dvc.busStopCoordinates = busStopCoordinates
             }
         }
     }

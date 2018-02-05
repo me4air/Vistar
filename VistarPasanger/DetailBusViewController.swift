@@ -8,10 +8,12 @@
 
 import UIKit
 import CoreData
+import MapKit
 
 
-class DetailBusViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewDelegate, UITableViewDataSource {
     
+    @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var noInformationLabel: UILabel!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var tableView: UITableView!
@@ -22,11 +24,16 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, UITableVie
     var busStopName = ""
     var busStopComment = ""
     var bustStopStartPoint = ""
+    var busStopCoordinates: [Double] = []
     var busStopList: [String] = []
     var arivalsData: [Arrivals] = []
     var displayArivalsData: [ArivalsToDislplayData] = []
+    let mapAnnotation = MKPointAnnotation()
     
     override func viewWillAppear(_ animated: Bool) {
+        mapAnnotation.title = busStopName
+        mapAnnotation.subtitle = busStopComment
+        mapAnnotation.coordinate = CLLocationCoordinate2D(latitude: busStopCoordinates[0], longitude: busStopCoordinates[1])
         getBusStopList()
         getBusArraivalTime()
         tableView.isHidden = true
@@ -45,7 +52,10 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, UITableVie
         activityIndicator.startAnimating()
         tableView.estimatedRowHeight = 80
         tableView.rowHeight = UITableViewAutomaticDimension
-        
+        mapView.addAnnotation(mapAnnotation)
+        mapView.camera.centerCoordinate.latitude = busStopCoordinates[0]
+        mapView.camera.centerCoordinate.longitude = busStopCoordinates[1]
+        mapView.camera.altitude = 600
         // Do any additional setup after loading the view.
     }
     

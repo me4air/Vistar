@@ -227,7 +227,7 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="kdP-ID-aZk">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" showsTraffic="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kdP-ID-aZk">
                                 <rect key="frame" x="0.0" y="145" width="375" height="194"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="kdP-ID-aZk" secondAttribute="height" multiplier="375:194" id="NCY-4L-S6m"/>
@@ -261,6 +261,7 @@
                         <outlet property="activityIndicator" destination="s2h-Ey-L3p" id="7h3-X0-Ifj"/>
                         <outlet property="busStopCommentLabe" destination="uk3-Vz-0qt" id="iO9-e8-zal"/>
                         <outlet property="busStopNameLabel" destination="RsS-Wc-pLd" id="Vbf-jc-p8g"/>
+                        <outlet property="mapView" destination="kdP-ID-aZk" id="dnG-VG-4z3"/>
                         <outlet property="noInformationLabel" destination="ahG-Hw-j5R" id="wMI-Ue-P7U"/>
                         <outlet property="tableView" destination="mRG-3R-pQY" id="FAV-Xb-Pu1"/>
                     </connections>
