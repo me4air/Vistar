@@ -13,7 +13,7 @@ import MapKit
 
 class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewDelegate, UITableViewDataSource {
     
-
+    //Аутлеты для работы с представлением
     @IBOutlet weak var mapHeight: NSLayoutConstraint!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var noInformationLabel: UILabel!
@@ -23,6 +23,7 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
     @IBOutlet weak var busStopCommentLabe: UILabel!
     @IBOutlet weak var downButton: UIButton!
     
+    //Action отвественный за изменение размера карты
     var isMapSmall = true
     var mapSavedSize = 0.0
     @IBAction func downButtonPresed(_ sender: Any) {
@@ -43,10 +44,8 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
 
     }
     
-
-    
- 
-
+    // MARK: - VAR
+    // Переменные
     var timer: Timer?
     var busStopName = ""
     var busStopComment = ""
@@ -57,6 +56,8 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
     var displayArivalsData: [ArivalsToDislplayData] = []
     let mapAnnotation = MKPointAnnotation()
     
+    //MARK: -  View live cyle
+    //Подгатавливаемся к появлению представления
     override func viewWillAppear(_ animated: Bool) {
         mapAnnotation.title = busStopName
         mapAnnotation.subtitle = busStopComment
@@ -67,7 +68,7 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         noInformationLabel.isHidden = true
         startTimer()
     }
-    
+    //Настраиваем представление после загрузки
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
@@ -89,7 +90,7 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         downButton.alpha = 0.6
         // Do any additional setup after loading the view.
     }
-    
+    //избавляемся от лишнего при попытке закрыть представление
     override func viewWillDisappear(_ animated: Bool) {
         displayArivalsData = []
         arivalsData = []
@@ -101,28 +102,29 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         stopTimer()
     }
     
+    // MARK: - Timer
+    //запускаем таймер автообновления
     func startTimer() {
         
         if timer == nil {
             timer = Timer.scheduledTimer(timeInterval: 20, target: self, selector: #selector(self.loop), userInfo: nil, repeats: true)
         }
     }
-    
+    //останавливаем таймер автообновления
     func stopTimer() {
         if timer != nil {
             timer?.invalidate()
             timer = nil
         }
     }
-    
+    //Loop-функция которая крутится в таймере
     @objc func loop() {
         self.mapView.annotations.forEach {
             if ($0 is BusPointAnnotation) {
                self.mapView.view(for: $0)?.fadeOut()
-             //  self.mapView.removeAnnotation($0)
             }
         }
-        let when = DispatchTime.now() + 0.5 // change 2 to desired number of seconds
+        let when = DispatchTime.now() + 0.5
         DispatchQueue.main.asyncAfter(deadline: when) {
             self.mapView.annotations.forEach {
                 if ($0 is BusPointAnnotation) {
@@ -134,10 +136,10 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
             self.getBusArraivalTime()
             self.reloadMapViewWithBuses()
         }
-       
         }
 
-    
+    // MARK: - Geting Data
+    //Получаем список всех остановок
     func getBusStopList(){
         var busStops: [BusStops] = []
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -152,7 +154,7 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
             }
         } catch {print(error.localizedDescription)}
     }
-    
+    //Получаем с сервера данные о прибытии автобусов на выбранную остановку
     func getBusArraivalTime(){
         guard let url = URL(string: "http://passenger.vistar.su/VPArrivalServer/arrivaltimeslist") else {return}
         let parameters = ["regionId":"36" , "fromStopId": [bustStopStartPoint] , "toStopId": busStopList] as [String : Any]
@@ -179,6 +181,7 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
             }.resume()
     }
     
+    //Фильтруем данные и удаляем дубликаты
     func filterBusStopsArrival(response: Responce){
         if let arrivalCounts =  response.busArrival?.count{
             for i in 0...arrivalCounts-1{
@@ -195,6 +198,7 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         
     }
     
+    //Реорганизовываем данные для отображения в таблице
     func reorganizeDataForDisplay(){
         if arivalsData.count != 0 {
             displayArivalsData.append(ArivalsToDislplayData(busName: arivalsData[0].busRoute, arivalTimes: []))
@@ -214,6 +218,7 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         
     }
     
+    //Проверяем есть ли уже такой маршрут в данных для отображения
     func isInArray(displayArivals: [ArivalsToDislplayData], busName: String) -> Bool{
         var answer = false
         if displayArivals.count > 0 {
@@ -226,14 +231,14 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         return answer
     }
     
+    //Служебная фкнкция
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     
-    // MARK: - TABLE VIEW
-    
+    //Ассинхронно перегружаем таблицу и карту когда получили данные
     func reloadTableViewData(){
         DispatchQueue.main.async {
             if self.arivalsData.count != 0 {
@@ -249,6 +254,9 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
     }
     
     
+    // MARK: - MapView
+    
+    //Перегружаем карту с новыми аннотациями
     func reloadMapViewWithBuses(){
         if self.arivalsData.count != 0 {
             for i in 0...self.arivalsData.count-1{
@@ -261,12 +269,15 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         }
     }
     
+    //Анимируем появление аннотаций
     func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
         views.forEach { (view) in
             view.alpha = 0.0
             view.fadeIn()
         }
     }
+    
+    //Настраиваем кастомные маркеры с подписями для пользователя, остановок и автобусов
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         let annotationView = MKAnnotationView(annotation: self.mapAnnotation, reuseIdentifier: "busStop")
         if (annotation is BusPointAnnotation) {
@@ -310,11 +321,14 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         return annotationView
     }
     
+    // MARK: - TABLE VIEW
     
+    //получаем количество секций
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
+    //получаем количество строк
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if displayArivalsData.count != 0 {
             return (displayArivalsData.count)
@@ -323,11 +337,12 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         }
     }
     
+    //Снимаем выделение
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    
+    //получаем конкрутную cell и заносим в нее данные
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! busArrivalTableViewCell
         var aditionalTimes = " "
@@ -349,19 +364,11 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
     }
     
     
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
 }
 
+ // MARK: -  Extensions
+
+//Расширяем стандартный массив, чтобы он умел удалять из себя дубликаты
 extension Array where Element:Equatable {
     func removeDuplicates() -> [Element] {
         var result = [Element]()
@@ -376,8 +383,9 @@ extension Array where Element:Equatable {
     }
 }
 
+//Расширяем UIView, чтобы мы могли анимировать появление элементов по alpha 
+
 public extension UIView {
-    
    
     func fadeIn(duration: TimeInterval = 0.5) {
         UIView.animate(withDuration: duration, animations: {
