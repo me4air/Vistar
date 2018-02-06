@@ -43,6 +43,11 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
 
     }
     
+
+    
+ 
+
+    var timer: Timer?
     var busStopName = ""
     var busStopComment = ""
     var bustStopStartPoint = ""
@@ -60,6 +65,7 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         getBusArraivalTime()
         tableView.isHidden = true
         noInformationLabel.isHidden = true
+        startTimer()
     }
     
     override func viewDidLoad() {
@@ -88,11 +94,50 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         displayArivalsData = []
         arivalsData = []
         self.mapView.annotations.forEach {
-            if !($0 is MKUserLocation) {
+            if ($0 is BusPointAnnotation) {
                 self.mapView.removeAnnotation($0)
             }
         }
+        stopTimer()
     }
+    
+    func startTimer() {
+        
+        if timer == nil {
+            timer = Timer.scheduledTimer(timeInterval: 20, target: self, selector: #selector(self.loop), userInfo: nil, repeats: true)
+        }
+    }
+    
+    func stopTimer() {
+        if timer != nil {
+            timer?.invalidate()
+            timer = nil
+        }
+    }
+    
+    @objc func loop() {
+        self.mapView.annotations.forEach {
+            if ($0 is BusPointAnnotation) {
+               self.mapView.view(for: $0)?.fadeOut()
+             //  self.mapView.removeAnnotation($0)
+            }
+        }
+        let when = DispatchTime.now() + 0.5 // change 2 to desired number of seconds
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.mapView.annotations.forEach {
+                if ($0 is BusPointAnnotation) {
+                    self.mapView.removeAnnotation($0)
+                }
+            }
+            self.arivalsData = []
+            self.displayArivalsData = []
+            self.getBusArraivalTime()
+            self.reloadMapViewWithBuses()
+        }
+       
+        }
+
+    
     func getBusStopList(){
         var busStops: [BusStops] = []
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -203,10 +248,10 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         }
     }
     
+    
     func reloadMapViewWithBuses(){
         if self.arivalsData.count != 0 {
             for i in 0...self.arivalsData.count-1{
-               
                 let busAnotation = BusPointAnnotation()
                 busAnotation.coordinate.latitude = self.arivalsData[i].lat!
                 busAnotation.coordinate.longitude = self.arivalsData[i].lon!
@@ -216,6 +261,12 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         }
     }
     
+    func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
+        views.forEach { (view) in
+            view.alpha = 0.0
+            view.fadeIn()
+        }
+    }
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         let annotationView = MKAnnotationView(annotation: self.mapAnnotation, reuseIdentifier: "busStop")
         if (annotation is BusPointAnnotation) {
@@ -323,4 +374,22 @@ extension Array where Element:Equatable {
         
         return result
     }
+}
+
+public extension UIView {
+    
+   
+    func fadeIn(duration: TimeInterval = 0.5) {
+        UIView.animate(withDuration: duration, animations: {
+            self.alpha = 1.0
+        })
+    }
+    
+    
+    func fadeOut(duration: TimeInterval = 0.5) {
+        UIView.animate(withDuration: duration, animations: {
+            self.alpha = 0.0
+        })
+    }
+    
 }
