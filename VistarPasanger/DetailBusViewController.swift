@@ -13,6 +13,7 @@ import MapKit
 
 class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewDelegate, UITableViewDataSource {
     
+    // MARK: -  Outlets
     //Аутлеты для работы с представлением
     @IBOutlet weak var mapHeight: NSLayoutConstraint!
     @IBOutlet weak var mapView: MKMapView!
@@ -41,7 +42,7 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         UIView.animate(withDuration: 0.3){
             self.view.layoutIfNeeded()
         }
-
+        
     }
     
     // MARK: - VAR
@@ -121,7 +122,7 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
     @objc func loop() {
         self.mapView.annotations.forEach {
             if ($0 is BusPointAnnotation) {
-               self.mapView.view(for: $0)?.fadeOut()
+                self.mapView.view(for: $0)?.fadeOut()
             }
         }
         let when = DispatchTime.now() + 0.5
@@ -136,8 +137,8 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
             self.getBusArraivalTime()
             self.reloadMapViewWithBuses()
         }
-        }
-
+    }
+    
     // MARK: - Geting Data
     //Получаем список всех остановок
     func getBusStopList(){
@@ -281,7 +282,7 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         let annotationView = MKAnnotationView(annotation: self.mapAnnotation, reuseIdentifier: "busStop")
         if (annotation is BusPointAnnotation) {
-             annotationView.image = UIImage(named: "ridingbusIcon")
+            annotationView.image = UIImage(named: "ridingbusIcon")
         }
         else {
             if !annotation.isKind(of: MKUserLocation.self) {annotationView.image = UIImage(named: "busStopIcon")
@@ -307,7 +308,7 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         annotationView.layer.shadowOpacity = 0.5
         annotationView.layer.shadowOffset = CGSize(width: 0, height: 2)
         if (annotation is BusPointAnnotation) {
-           annotationView.layer.shadowPath = UIBezierPath(ovalIn: annotationView.bounds).cgPath
+            annotationView.layer.shadowPath = UIBezierPath(ovalIn: annotationView.bounds).cgPath
         }
         else {
             if !annotation.isKind(of: MKUserLocation.self) {
@@ -366,7 +367,7 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
     
 }
 
- // MARK: -  Extensions
+// MARK: -  Extensions
 
 //Расширяем стандартный массив, чтобы он умел удалять из себя дубликаты
 extension Array where Element:Equatable {
@@ -383,10 +384,10 @@ extension Array where Element:Equatable {
     }
 }
 
-//Расширяем UIView, чтобы мы могли анимировать появление элементов по alpha 
+//Расширяем UIView, чтобы мы могли анимировать появление элементов по alpha
 
 public extension UIView {
-   
+    
     func fadeIn(duration: TimeInterval = 0.5) {
         UIView.animate(withDuration: duration, animations: {
             self.alpha = 1.0
