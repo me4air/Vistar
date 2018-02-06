@@ -41,8 +41,7 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         }
         UIView.animate(withDuration: 0.3){
             self.view.layoutIfNeeded()
-        }
-        
+        }  
     }
     
     // MARK: - VAR
