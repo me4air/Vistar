@@ -11,9 +11,9 @@ import CoreData
 import MapKit
 
 
-class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewDelegate, UITableViewDataSource {
+class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
     
-    // MARK: -  Outlets
+    // MARK: -  IBOutlets
     //Аутлеты для работы с представлением
     @IBOutlet weak var mapHeight: NSLayoutConstraint!
     @IBOutlet weak var mapView: MKMapView!
@@ -23,7 +23,10 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
     @IBOutlet weak var busStopNameLabel: UILabel!
     @IBOutlet weak var busStopCommentLabe: UILabel!
     @IBOutlet weak var downButton: UIButton!
+    @IBOutlet weak var autorotatingButton: UIButton!
     
+    
+    // MARK: -  IBActions
     //Action отвественный за изменение размера карты
     var isMapSmall = true
     var mapSavedSize = 0.0
@@ -33,15 +36,31 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
             mapHeight.constant = self.view.frame.height-280
             downButton.setImage( UIImage.init(named: "upButton"), for: .normal)
             isMapSmall = false
+            mapView.camera.altitude += 500
+            print (mapView.camera.altitude)
         }
         else {
             mapHeight.constant = CGFloat(mapSavedSize)
             downButton.setImage( UIImage.init(named: "downButton"), for: .normal)
             isMapSmall = true
+            mapView.camera.altitude -= 500
+            print (mapView.camera.altitude)
         }
         UIView.animate(withDuration: 0.3){
             self.view.layoutIfNeeded()
         }  
+    }
+    
+    var isAutorotating = false
+    @IBAction func autorotatingButtonTouched(_ sender: Any) {
+        
+        if isAutorotating{
+            autorotatingButton.setImage(UIImage.init(named: "arrow"), for: .normal)
+            isAutorotating = false
+        } else {
+            autorotatingButton.setImage(UIImage.init(named: "compas"), for: .normal)
+            isAutorotating = true
+        }
     }
     
     // MARK: - VAR
@@ -55,6 +74,7 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
     var arivalsData: [Arrivals] = []
     var displayArivalsData: [ArivalsToDislplayData] = []
     let mapAnnotation = MKPointAnnotation()
+    let locationManager = CLLocationManager()
     
     //MARK: -  View live cyle
     //Подгатавливаемся к появлению представления
@@ -64,8 +84,8 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         mapAnnotation.coordinate = CLLocationCoordinate2D(latitude: busStopCoordinates[0], longitude: busStopCoordinates[1])
         getBusStopList()
         getBusArraivalTime()
-        tableView.isHidden = true
-        noInformationLabel.isHidden = true
+        tableView.alpha = 0
+        noInformationLabel.text = "Ищем автобусы" 
         startTimer()
     }
     //Настраиваем представление после загрузки
@@ -87,7 +107,10 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         mapView.camera.centerCoordinate.longitude = busStopCoordinates[1]
         mapView.camera.altitude = 800
         mapView.camera.pitch = 50
+        locationManager.delegate = self
+        locationManager.startUpdatingHeading()
         downButton.alpha = 0.6
+        autorotatingButton.alpha = 0.8
         // Do any additional setup after loading the view.
     }
     //избавляемся от лишнего при попытке закрыть представление
@@ -242,9 +265,9 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
     func reloadTableViewData(){
         DispatchQueue.main.async {
             if self.arivalsData.count != 0 {
-                self.tableView.isHidden = false}
+                self.tableView.fadeIn()}
             else {
-                self.noInformationLabel.isHidden = false
+                self.noInformationLabel.text = "Упс! Кажется, что мы ничего не нашли :'("
             }
             self.reorganizeDataForDisplay()
             self.reloadMapViewWithBuses()
@@ -275,6 +298,13 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
             view.alpha = 0.0
             view.fadeIn()
         }
+    }
+    //Получаем ориентацию
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+       
+        if isAutorotating{
+        mapView.camera.heading = newHeading.magneticHeading
+        mapView.setCamera(mapView.camera, animated: true)}
     }
     
     //Настраиваем кастомные маркеры с подписями для пользователя, остановок и автобусов

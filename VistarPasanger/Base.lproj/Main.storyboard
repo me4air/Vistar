@@ -127,7 +127,7 @@
                                 <rect key="frame" x="0.0" y="335" width="375" height="332"/>
                                 <color key="backgroundColor" red="0.39447566497344755" green="0.60296559654643378" blue="0.84491989213197971" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Упс! Кажется, что мы ничего не нашли 😢" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ahG-Hw-j5R">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Упс! Кажется, что мы ничего не нашли :'(" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ahG-Hw-j5R">
                                 <rect key="frame" x="0.0" y="509" width="375" height="60"/>
                                 <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="25"/>
                                 <color key="textColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -243,6 +243,17 @@
                                     <action selector="downButtonPresed:" destination="yVa-ba-hx0" eventType="touchUpInside" id="Hg8-x4-GGK"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r04-rT-3Xw">
+                                <rect key="frame" x="332" y="300" width="27" height="27"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="27" id="3Ny-j9-ttv"/>
+                                    <constraint firstAttribute="width" secondItem="r04-rT-3Xw" secondAttribute="height" multiplier="1:1" id="RiA-zW-VPl"/>
+                                </constraints>
+                                <state key="normal" image="arrow"/>
+                                <connections>
+                                    <action selector="autorotatingButtonTouched:" destination="yVa-ba-hx0" eventType="touchUpInside" id="7uX-Eb-9SJ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.47056742247115879" green="0.72300398772681018" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -253,6 +264,7 @@
                             <constraint firstItem="ahG-Hw-j5R" firstAttribute="trailing" secondItem="kAK-n7-aEa" secondAttribute="trailing" id="Acr-8Q-3TU"/>
                             <constraint firstItem="uk3-Vz-0qt" firstAttribute="top" secondItem="RsS-Wc-pLd" secondAttribute="bottom" constant="-2" id="BPO-sE-C9f"/>
                             <constraint firstItem="mRG-3R-pQY" firstAttribute="trailing" secondItem="PwO-ju-3I7" secondAttribute="trailing" id="FHb-On-bGp"/>
+                            <constraint firstItem="kdP-ID-aZk" firstAttribute="leading" secondItem="r04-rT-3Xw" secondAttribute="trailing" constant="-359" id="GAM-dv-CKO"/>
                             <constraint firstItem="mRG-3R-pQY" firstAttribute="top" secondItem="kdP-ID-aZk" secondAttribute="bottom" constant="-4" id="HiY-TA-6xx"/>
                             <constraint firstItem="kdP-ID-aZk" firstAttribute="trailing" secondItem="kAK-n7-aEa" secondAttribute="trailing" id="Kxe-JS-s2F"/>
                             <constraint firstItem="RsS-Wc-pLd" firstAttribute="top" secondItem="kAK-n7-aEa" secondAttribute="top" constant="25" id="Ptn-zB-Hsn"/>
@@ -264,6 +276,7 @@
                             <constraint firstItem="mRG-3R-pQY" firstAttribute="leading" secondItem="PwO-ju-3I7" secondAttribute="leading" id="Yka-87-Fm7"/>
                             <constraint firstItem="ahG-Hw-j5R" firstAttribute="leading" secondItem="kAK-n7-aEa" secondAttribute="leading" id="a9z-1h-7Ms"/>
                             <constraint firstItem="gW5-kN-Okr" firstAttribute="centerX" secondItem="s2h-Ey-L3p" secondAttribute="centerX" id="cq7-qh-rHg"/>
+                            <constraint firstItem="r04-rT-3Xw" firstAttribute="top" secondItem="kdP-ID-aZk" secondAttribute="bottom" constant="-39" id="h9e-3N-Zb7"/>
                             <constraint firstItem="mRG-3R-pQY" firstAttribute="leading" secondItem="kdP-ID-aZk" secondAttribute="trailing" constant="-375" id="iba-j3-Wvu"/>
                             <constraint firstItem="uk3-Vz-0qt" firstAttribute="centerX" secondItem="kAK-n7-aEa" secondAttribute="centerX" id="kFK-Jm-Vbc"/>
                             <constraint firstItem="mRG-3R-pQY" firstAttribute="trailing" secondItem="ahG-Hw-j5R" secondAttribute="trailing" id="liz-Jz-OUF"/>
@@ -276,6 +289,7 @@
                     <navigationItem key="navigationItem" title="Автобусы" largeTitleDisplayMode="never" id="C0c-jW-fIg"/>
                     <connections>
                         <outlet property="activityIndicator" destination="s2h-Ey-L3p" id="7h3-X0-Ifj"/>
+                        <outlet property="autorotatingButton" destination="r04-rT-3Xw" id="saS-43-prj"/>
                         <outlet property="busStopCommentLabe" destination="uk3-Vz-0qt" id="iO9-e8-zal"/>
                         <outlet property="busStopNameLabel" destination="RsS-Wc-pLd" id="Vbf-jc-p8g"/>
                         <outlet property="downButton" destination="gW5-kN-Okr" id="LTE-xN-T7t"/>
@@ -309,6 +323,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="arrow" width="40" height="40"/>
         <image name="busIcon" width="25" height="25"/>
         <image name="downButton" width="100" height="50"/>
         <image name="timeIcon" width="25" height="25"/>
