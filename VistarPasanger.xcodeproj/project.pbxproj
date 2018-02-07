@@ -21,6 +21,8 @@
 		A0731950201B4C7F009761CB /* DetailBusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A073194F201B4C7F009761CB /* DetailBusViewController.swift */; };
 		A08C2DAF202098F600F12A31 /* busArrivalTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2DAE202098F600F12A31 /* busArrivalTableViewCell.swift */; };
 		A08C2DB2202313C800F12A31 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A08C2DB1202313C800F12A31 /* MapKit.framework */; };
+		A091A499202B1EF400D2DB50 /* PassangerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A091A498202B1EF400D2DB50 /* PassangerViewController.swift */; };
+		A091A49B202B1F3300D2DB50 /* MarshrutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A091A49A202B1F3300D2DB50 /* MarshrutViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +42,8 @@
 		A073194F201B4C7F009761CB /* DetailBusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailBusViewController.swift; sourceTree = "<group>"; };
 		A08C2DAE202098F600F12A31 /* busArrivalTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = busArrivalTableViewCell.swift; sourceTree = "<group>"; };
 		A08C2DB1202313C800F12A31 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		A091A498202B1EF400D2DB50 /* PassangerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassangerViewController.swift; sourceTree = "<group>"; };
+		A091A49A202B1F3300D2DB50 /* MarshrutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarshrutViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,15 +78,15 @@
 		A031A1092019F50C00AC85DF /* VistarPasanger */ = {
 			isa = PBXGroup;
 			children = (
+				A091A498202B1EF400D2DB50 /* PassangerViewController.swift */,
+				A091A49A202B1F3300D2DB50 /* MarshrutViewController.swift */,
 				A031A1212019FB6C00AC85DF /* busStopsTableViewController.swift */,
 				A073194F201B4C7F009761CB /* DetailBusViewController.swift */,
 				A0052278202862FB00550CFA /* BusPointAnnotation.swift */,
 				A031A10E2019F50C00AC85DF /* Main.storyboard */,
 				A031A10A2019F50C00AC85DF /* AppDelegate.swift */,
-				A073194D201B31DC009761CB /* BusStopTableViewCell.swift */,
-				A08C2DAE202098F600F12A31 /* busArrivalTableViewCell.swift */,
-				A062A34420249B4200375A70 /* DetaiBusDecodableStructs.swift */,
-				A062A34620249BF000375A70 /* BusStopsDecodableStucts.swift */,
+				A091A49D202B1F5200D2DB50 /* CastomTableViewCells */,
+				A091A49C202B1F3E00D2DB50 /* DecodableStructs */,
 				A031A1112019F50C00AC85DF /* VistarPasanger.xcdatamodeld */,
 				A031A1142019F50C00AC85DF /* Assets.xcassets */,
 				A031A1162019F50C00AC85DF /* LaunchScreen.storyboard */,
@@ -98,6 +102,24 @@
 				A08C2DB1202313C800F12A31 /* MapKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A091A49C202B1F3E00D2DB50 /* DecodableStructs */ = {
+			isa = PBXGroup;
+			children = (
+				A062A34420249B4200375A70 /* DetaiBusDecodableStructs.swift */,
+				A062A34620249BF000375A70 /* BusStopsDecodableStucts.swift */,
+			);
+			path = DecodableStructs;
+			sourceTree = "<group>";
+		};
+		A091A49D202B1F5200D2DB50 /* CastomTableViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				A073194D201B31DC009761CB /* BusStopTableViewCell.swift */,
+				A08C2DAE202098F600F12A31 /* busArrivalTableViewCell.swift */,
+			);
+			path = CastomTableViewCells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -181,12 +203,14 @@
 				A062A34520249B4200375A70 /* DetaiBusDecodableStructs.swift in Sources */,
 				A073194E201B31DC009761CB /* BusStopTableViewCell.swift in Sources */,
 				A0731950201B4C7F009761CB /* DetailBusViewController.swift in Sources */,
+				A091A49B202B1F3300D2DB50 /* MarshrutViewController.swift in Sources */,
 				A031A1132019F50C00AC85DF /* VistarPasanger.xcdatamodeld in Sources */,
 				A062A34720249BF000375A70 /* BusStopsDecodableStucts.swift in Sources */,
 				A031A10B2019F50C00AC85DF /* AppDelegate.swift in Sources */,
 				A0052279202862FB00550CFA /* BusPointAnnotation.swift in Sources */,
 				A08C2DAF202098F600F12A31 /* busArrivalTableViewCell.swift in Sources */,
 				A031A1222019FB6C00AC85DF /* busStopsTableViewController.swift in Sources */,
+				A091A499202B1EF400D2DB50 /* PassangerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

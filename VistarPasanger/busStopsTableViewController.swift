@@ -16,6 +16,9 @@ class busStopsTableViewController: UIViewController, CLLocationManagerDelegate, 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var busSegmentedControl: UISegmentedControl!
     
+    @IBAction  func unwindSegue(segue: UIStoryboardSegue){
+    }
+    
     //Массив остановок для работы с БД CoreData
     var allBusStops: [BusStops] = []
     

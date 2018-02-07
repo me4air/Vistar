@@ -37,14 +37,12 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
             downButton.setImage( UIImage.init(named: "upButton"), for: .normal)
             isMapSmall = false
             mapView.camera.altitude += 500
-            print (mapView.camera.altitude)
         }
         else {
             mapHeight.constant = CGFloat(mapSavedSize)
             downButton.setImage( UIImage.init(named: "downButton"), for: .normal)
             isMapSmall = true
             mapView.camera.altitude -= 500
-            print (mapView.camera.altitude)
         }
         UIView.animate(withDuration: 0.3){
             self.view.layoutIfNeeded()
