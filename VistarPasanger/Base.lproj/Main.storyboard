@@ -132,7 +132,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DDF-4Q-c1P" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="807" y="-633"/>
+            <point key="canvasLocation" x="807" y="-571"/>
         </scene>
         <!--Автобусы-->
         <scene sceneID="uk3-S2-0QY">
@@ -166,14 +166,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="86.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="123А" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kiU-ve-84k">
-                                                    <rect key="frame" x="45" y="31" width="62.5" height="36"/>
-                                                    <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="30"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="busIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Oz3-Bm-Dic">
-                                                    <rect key="frame" x="7" y="32" width="25" height="25"/>
+                                                    <rect key="frame" x="24" y="32" width="25" height="25"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="Oz3-Bm-Dic" secondAttribute="height" multiplier="1:1" id="S5x-Ol-Kof"/>
                                                     </constraints>
@@ -201,10 +195,16 @@
                                                     <color key="textColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="123А" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kiU-ve-84k">
+                                                    <rect key="frame" x="65" y="28" width="62.5" height="36"/>
+                                                    <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="30"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="kiU-ve-84k" firstAttribute="top" secondItem="oWp-It-ruC" secondAttribute="top" constant="31" id="1yk-vT-pMm"/>
-                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="kiU-ve-84k" secondAttribute="bottom" constant="19.5" id="6M9-m1-RfW"/>
+                                                <constraint firstItem="kiU-ve-84k" firstAttribute="top" secondItem="oWp-It-ruC" secondAttribute="top" constant="28" id="1yk-vT-pMm"/>
+                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="kiU-ve-84k" secondAttribute="bottom" constant="18.5" id="6M9-m1-RfW"/>
                                                 <constraint firstAttribute="trailing" secondItem="wIx-my-xb4" secondAttribute="trailing" constant="103.5" id="Dgz-Yk-Cs2"/>
                                                 <constraint firstItem="wIx-my-xb4" firstAttribute="leading" secondItem="X00-pv-tbn" secondAttribute="leading" id="HLm-04-TLB"/>
                                                 <constraint firstItem="Oz3-Bm-Dic" firstAttribute="top" secondItem="oWp-It-ruC" secondAttribute="top" constant="32" id="N2o-PT-W5l"/>
@@ -213,10 +213,10 @@
                                                 <constraint firstAttribute="bottom" secondItem="wIx-my-xb4" secondAttribute="bottom" constant="8" id="T6o-Ik-3SO"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="K9q-vQ-ekr" secondAttribute="trailing" constant="66" id="Udu-aD-Wgb"/>
                                                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Oz3-Bm-Dic" secondAttribute="bottom" constant="24.5" id="V4T-m7-yxj"/>
-                                                <constraint firstItem="Oz3-Bm-Dic" firstAttribute="leading" secondItem="oWp-It-ruC" secondAttribute="leading" constant="7" id="Y92-6u-Ry1"/>
+                                                <constraint firstItem="Oz3-Bm-Dic" firstAttribute="leading" secondItem="oWp-It-ruC" secondAttribute="leading" constant="24" id="Y92-6u-Ry1"/>
                                                 <constraint firstItem="wIx-my-xb4" firstAttribute="top" secondItem="Srb-XW-8bg" secondAttribute="bottom" constant="0.5" id="azW-Yi-hIS"/>
-                                                <constraint firstItem="K9q-vQ-ekr" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="kiU-ve-84k" secondAttribute="trailing" constant="66.5" id="dFm-DZ-Uki"/>
-                                                <constraint firstItem="kiU-ve-84k" firstAttribute="leading" secondItem="Oz3-Bm-Dic" secondAttribute="trailing" constant="13" id="xYw-8H-Z11"/>
+                                                <constraint firstItem="K9q-vQ-ekr" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="kiU-ve-84k" secondAttribute="trailing" constant="46.5" id="dFm-DZ-Uki"/>
+                                                <constraint firstItem="kiU-ve-84k" firstAttribute="leading" secondItem="Oz3-Bm-Dic" secondAttribute="trailing" constant="16" id="xYw-8H-Z11"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -369,7 +369,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XZg-3K-ZgC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="807" y="898"/>
+            <point key="canvasLocation" x="807" y="889"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="xBt-sM-BoD">
