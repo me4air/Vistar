@@ -29,9 +29,9 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YRP-rx-dre">
                                 <rect key="frame" x="0.0" y="105" width="375" height="562"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="cell" rowHeight="59" id="beF-MT-EM5" customClass="BusStopTableViewCell" customModule="VistarPasanger" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="cell" rowHeight="59" id="beF-MT-EM5" customClass="BusStopTableViewCell" customModule="VistarPasanger" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="59"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="beF-MT-EM5" id="Vbr-Fa-kQ5">
@@ -71,6 +71,7 @@
                                                 <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="ahV-yu-0Jp" secondAttribute="trailing" constant="73" id="vf2-H2-HvD"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <outlet property="commentLabel" destination="ahV-yu-0Jp" id="33M-3d-Sa3"/>
                                             <outlet property="favoriteImage" destination="D9b-G2-Dg6" id="cjG-JC-h4u"/>
@@ -82,6 +83,7 @@
                             </tableView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="qtD-Xn-XqU">
                                 <rect key="frame" x="16" y="72" width="343" height="29"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <segments>
                                     <segment title="Ближайшие"/>
                                     <segment title="Избранные"/>
@@ -93,7 +95,7 @@
                                 </connections>
                             </segmentedControl>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="YRP-rx-dre" firstAttribute="trailing" secondItem="rsF-EW-T1i" secondAttribute="trailing" id="Fed-3V-uot"/>
                             <constraint firstItem="qtD-Xn-XqU" firstAttribute="trailing" secondItem="rsF-EW-T1i" secondAttribute="trailing" constant="-16" id="H7s-Dy-umq"/>
