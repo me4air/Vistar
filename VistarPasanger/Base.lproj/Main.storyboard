@@ -363,6 +363,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="I43-HP-jST">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="617"/>
+                            </mapView>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="pKx-1G-mlU">
+                                <rect key="frame" x="0.0" y="561" width="375" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="3ai-q6-C2u" id="Pv3-oc-kyd"/>
+                                </connections>
+                            </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="pE9-UV-97v">
                                 <rect key="frame" x="0.0" y="617" width="375" height="316"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -389,18 +399,15 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="pKx-1G-mlU">
-                                <rect key="frame" x="0.0" y="561" width="375" height="56"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="3ai-q6-C2u" id="Pv3-oc-kyd"/>
-                                </connections>
-                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="t2K-a0-vk2" firstAttribute="bottom" secondItem="I43-HP-jST" secondAttribute="bottom" constant="1" id="0aT-uz-KdF"/>
                             <constraint firstItem="pE9-UV-97v" firstAttribute="leading" secondItem="t2K-a0-vk2" secondAttribute="leading" id="FQS-MS-xsG"/>
                             <constraint firstItem="pKx-1G-mlU" firstAttribute="top" secondItem="t2K-a0-vk2" secondAttribute="top" constant="541" id="Kvr-Xt-UyG"/>
+                            <constraint firstItem="I43-HP-jST" firstAttribute="leading" secondItem="t2K-a0-vk2" secondAttribute="leading" id="Nwo-86-S5p"/>
+                            <constraint firstItem="t2K-a0-vk2" firstAttribute="top" secondItem="I43-HP-jST" secondAttribute="top" constant="20" id="QEa-DG-p9Z"/>
+                            <constraint firstItem="t2K-a0-vk2" firstAttribute="trailing" secondItem="I43-HP-jST" secondAttribute="trailing" id="QRm-3c-0WR"/>
                             <constraint firstItem="pKx-1G-mlU" firstAttribute="leading" secondItem="t2K-a0-vk2" secondAttribute="leading" id="U4O-hH-YL6"/>
                             <constraint firstItem="pE9-UV-97v" firstAttribute="top" secondItem="pKx-1G-mlU" secondAttribute="bottom" id="ih1-XO-XXy"/>
                             <constraint firstItem="pKx-1G-mlU" firstAttribute="trailing" secondItem="t2K-a0-vk2" secondAttribute="trailing" id="koh-MO-Umi"/>
@@ -410,9 +417,11 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Маршрут" image="map" id="wy4-rj-Ajf"/>
                     <connections>
+                        <outlet property="mapView" destination="I43-HP-jST" id="5A5-4H-tHO"/>
                         <outlet property="searchBar" destination="pKx-1G-mlU" id="4AA-ZA-n7w"/>
                         <outlet property="searchBarConstraint" destination="Kvr-Xt-UyG" id="Y8o-bS-eXa"/>
                         <outlet property="tableView" destination="pE9-UV-97v" id="rfl-23-FOQ"/>
+                        <outlet property="tableViewHightConstraint" destination="7ZX-Kn-Fcm" id="IWq-I8-cjn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XZg-3K-ZgC" userLabel="First Responder" sceneMemberID="firstResponder"/>
