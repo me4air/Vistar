@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 class MarshrutViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, MKMapViewDelegate
   {
@@ -27,11 +28,19 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     var savedSearchConstraint = 0.0
     let searchController = UISearchController(searchResultsController: nil)
     var keyBoardHeight = 0
+    var allBusStops: [BusStops] = []
+    var filterdResoultArray: [BusStops] = []
+
+    
+    override func viewWillAppear(_ animated: Bool) {
+        getDataFromeCoreData()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.rowHeight = 59
         savedSearchConstraint = Double(searchBarConstraint.constant)
         configureSearchController()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
@@ -58,7 +67,11 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 15
+        if searchController.isActive && searchController.searchBar.text != ""{
+            return filterdResoultArray.count
+        } else {
+            return (allBusStops.count)
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -66,9 +79,21 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     
+    func busStopToDisplayAT(indexPath: IndexPath) -> BusStops {
+        let busStop: BusStops
+        if searchController.isActive && searchController.searchBar.text != "" {
+            busStop = filterdResoultArray[indexPath.row]
+        }
+        else {
+            busStop = allBusStops[indexPath.row]
+        }
+        return busStop
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = "TEST"
+        let busStop = busStopToDisplayAT(indexPath: indexPath)
+        cell.textLabel?.text = busStop.name
         return cell
     }
     
@@ -88,17 +113,66 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
         searchBar.addSubview(searchController.searchBar)
         
     }
+    
+    //MARK: CoreData
+    
+    func getDataFromeCoreData(){
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<BusStops> = BusStops.fetchRequest()
+        do {
+            allBusStops = try context.fetch(fetchRequest)
+        } catch {print(error.localizedDescription)}
+        allBusStops = allBusStops.sorted(by: { (this, that) -> Bool in
+            if (this.name! <= that.name!){
+                return true
+            } else {
+                return false
+            }
+        })
+    }
 
     
     //MARK: Search Bar
     
     
+    func filterContentFor (searchText text: String){
+        filterdResoultArray = allBusStops.filter({ (busStop) -> Bool in
+            return (busStop.name?.lowercased().contains(text.lowercased()))!
+        })
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentFor(searchText: searchController.searchBar.text!)
+        resizeTableViewForSearch()
+        tableView.reloadData()
+    }
+    
+    func getDistanceBetweenSearchAndKeyboard() -> CGFloat {
+        return self.view.frame.height-68-CGFloat(self.keyBoardHeight)
+    }
+    
     func openSearch(){
         UIView.animate(withDuration: 0.4) {
             self.searchBarConstraint.constant=0
-            self.tableViewHightConstraint.constant = self.view.frame.height-68-CGFloat(self.keyBoardHeight)
+            self.tableViewHightConstraint.constant = self.getDistanceBetweenSearchAndKeyboard()
             self.view.layoutIfNeeded()
             
+        }
+    }
+    
+    func resizeTableViewForSearch(){
+        if searchController.searchBar.text != ""{
+        UIView.animate(withDuration: 0.2) {
+            if (CGFloat(self.filterdResoultArray.count) * self.tableView.rowHeight < self.getDistanceBetweenSearchAndKeyboard()){
+                self.tableViewHightConstraint.constant = CGFloat(self.filterdResoultArray.count) * self.tableView.rowHeight
+            }
+            else {
+                self.tableViewHightConstraint.constant = self.getDistanceBetweenSearchAndKeyboard()
+            }
+            self.view.layoutIfNeeded()
+            
+            }
         }
     }
     
@@ -130,6 +204,7 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
+    
     func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
         if !searchActive {
             searchActive = true
@@ -138,10 +213,6 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
 
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        print ("hi")
-    }
     
 
 }
