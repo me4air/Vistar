@@ -175,6 +175,7 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
             }
         } catch {print(error.localizedDescription)}
     }
+    
     //Получаем с сервера данные о прибытии автобусов на выбранную остановку
     func getBusArraivalTime(){
         guard let url = URL(string: "http://passenger.vistar.su/VPArrivalServer/arrivaltimeslist") else {return}

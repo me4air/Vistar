@@ -417,7 +417,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Маршрут" image="map" id="wy4-rj-Ajf"/>
                     <connections>
-                        <outlet property="mapView" destination="I43-HP-jST" id="5A5-4H-tHO"/>
+                        <outlet property="mapView" destination="I43-HP-jST" id="XsV-aF-lpH"/>
                         <outlet property="searchBar" destination="pKx-1G-mlU" id="4AA-ZA-n7w"/>
                         <outlet property="searchBarConstraint" destination="Kvr-Xt-UyG" id="Y8o-bS-eXa"/>
                         <outlet property="tableView" destination="pE9-UV-97v" id="rfl-23-FOQ"/>
