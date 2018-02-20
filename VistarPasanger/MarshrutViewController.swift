@@ -30,15 +30,20 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     var allBusStops: [BusStops] = []
     var busStopsForSearch: [BusStops] = []
     var filterdResoultArray: [BusStops] = []
+    var busStopsForMap: [BusStops] = []
     var userLocation:CLLocation = CLLocation(latitude: 0.0, longitude: 0.0)
+    let mapAnnotation = MKPointAnnotation()
+    var savedMapHieght = 9800.0
     
 
     
     override func viewWillAppear(_ animated: Bool) {
         getDataFromeCoreData()
         determineMyCurrentLocation()
+        mapView.camera.altitude = 9800
         busStopsForSearch = clearBusStopsFromDuplicates(busStops: allBusStops)
-        addBusStopsOnMap()
+        busStopsForMap = filterBusStopsForMap(busStops: allBusStops)
+        refreshMapAnnotations()
         
     }
     
@@ -55,7 +60,7 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
         determineMyCurrentLocation()
         mapView.camera.centerCoordinate.latitude = userLocation.coordinate.latitude
         mapView.camera.centerCoordinate.longitude = userLocation.coordinate.longitude
-        mapView.camera.altitude = 9800
+        
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -65,15 +70,11 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     func clearBusStopsFromDuplicates(busStops: [BusStops]) -> [BusStops] {
         var clearedBusStops: [BusStops] = []
         var isUnicue = true
-       // var firstCoordinates = CLLocation(latitude: 0.0, longitude: 0.0)
-       // var secondCoordinates = CLLocation(latitude: 0.0, longitude: 0.0)
         if busStops.count != 0 {
             clearedBusStops.append(busStops[0])
             for i in 0...busStops.count-1 {
                 for j in 0...clearedBusStops.count-1{
-                   // firstCoordinates = CLLocation(latitude: clearedBusStops[j].lat, longitude: clearedBusStops[j].lon)
-                  //  secondCoordinates = CLLocation(latitude: busStops[i].lat, longitude: busStops[i].lon)
-                    if((clearedBusStops[j].name?.lowercased() == busStops[i].name?.lowercased()) /*&& firstCoordinates.distance(from: secondCoordinates)<100*/){
+                    if((clearedBusStops[j].name?.lowercased() == busStops[i].name?.lowercased())){
                         isUnicue = false
                     }
                 }
@@ -86,6 +87,33 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
         return clearedBusStops
     }
     
+    func filterBusStopsForMap(busStops: [BusStops]) -> [BusStops]{
+        var filteredBusStops: [BusStops] = []
+        var isUnicue = true
+        var firstCoordinates = CLLocation(latitude: 0.0, longitude: 0.0)
+        var secondCoordinates = CLLocation(latitude: 0.0, longitude: 0.0)
+        if busStops.count != 0 {
+            filteredBusStops.append(busStops[0])
+            for i in 0...busStops.count-1 {
+                for j in 0...filteredBusStops.count-1{
+                    firstCoordinates = CLLocation(latitude: filteredBusStops[j].lat, longitude: filteredBusStops[j].lon)
+                    secondCoordinates = CLLocation(latitude: busStops[i].lat, longitude: busStops[i].lon)
+                    let distance = firstCoordinates.distance(from: secondCoordinates)
+                    let hypotenuse = (distance*distance+mapView.camera.altitude*mapView.camera.altitude).squareRoot()
+                    let angle = acos(mapView.camera.altitude/hypotenuse)
+                    if(angle<(4 * .pi/180)){
+                        isUnicue = false
+                    }
+                }
+                if isUnicue {
+                    filteredBusStops.append(busStops[i])
+                }
+                isUnicue = true
+            }
+        }
+        return filteredBusStops
+    }
+    
     func createBusStopAnnotationSet(busStopName: String) -> [BusStops]{
         var busStopsForAnnotation: [BusStops] = []
         for i in 0...allBusStops.count-1{
@@ -93,22 +121,24 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
                 busStopsForAnnotation.append(allBusStops[i])
             }
         }
+        busStopsForAnnotation = filterBusStopsForMap(busStops: busStopsForAnnotation)
         return busStopsForAnnotation
     }
     
     func addBusStopsOnMap(){
-        if self.allBusStops.count != 0 {
-            for i in 0...self.allBusStops.count-1{
+        if self.busStopsForMap.count != 0 {
+            for i in 0...self.busStopsForMap.count-1{
                 let busAnotation = BusPointAnnotation()
-                busAnotation.coordinate.latitude = self.allBusStops[i].lat
-                busAnotation.coordinate.longitude = self.allBusStops[i].lon
-                busAnotation.title = self.allBusStops[i].name
+                busAnotation.coordinate.latitude = self.busStopsForMap[i].lat
+                busAnotation.coordinate.longitude = self.busStopsForMap[i].lon
+                busAnotation.title = self.busStopsForMap[i].name
                 self.mapView.addAnnotation(busAnotation)
             }
         }
     }
     
     func refreshMapAnnotations(){
+            clearMapAnnotations()
         if searchController.searchBar.text != ""{
             mapView.removeAnnotations(mapView.annotations)
             if filterdResoultArray.count != 0{
@@ -124,9 +154,63 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
                 self.mapView.addAnnotation(busAnotation)
                 }
             }
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.mapView.removeAnnotations(self.mapView.annotations)
+                self.addBusStopsOnMap()
+            }
+            
         }
     }
     
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        let annotationView = MKAnnotationView(annotation: self.mapAnnotation, reuseIdentifier: "busStop")
+        if (annotation is BusPointAnnotation) {
+            annotationView.image = UIImage(named: "busStopIcon")
+            annotationView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+            let label = UILabel(frame: CGRect(x: 0, y: 60, width: 200, height: 50))
+            label.textAlignment = NSTextAlignment.center
+            label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 30)
+            label.textColor = #colorLiteral(red: 0.1712999683, green: 0.1712999683, blue: 0.1712999683, alpha: 1)
+            if !annotation.isKind(of: MKUserLocation.self) {
+                label.text = annotation.title!
+            } else{
+                label.text = "Вы здесь"
+            }
+            label.sizeToFit()
+            label.center = CGPoint(x: label.center.x-label.frame.width/2+annotationView.frame.width, y: 80)
+            annotationView.addSubview(label)
+        }
+         return annotationView
+    }
+    
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        if abs(mapView.camera.altitude-savedMapHieght) > 20 {
+        busStopsForMap = filterBusStopsForMap(busStops: allBusStops)
+        refreshMapAnnotations()
+        }
+    }
+    
+    func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
+        savedMapHieght = mapView.camera.altitude
+    }
+    
+    func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
+        views.forEach { (view) in
+            view.alpha = 0.0
+            view.fadeIn(duration: 0.3)
+        }
+    }
+    
+    func clearMapAnnotations(){
+        
+        self.mapView.annotations.forEach {
+            if ($0 is BusPointAnnotation) {
+                self.mapView.view(for: $0)?.fadeOut(duration: 0.3)
+            }
+        }
+        
+    }
     
     func determineMyCurrentLocation() {
         locationManager = CLLocationManager()
@@ -182,9 +266,11 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
         searchBarSearchButtonClicked(searchController.searchBar)
         if mapView.annotations.count != 0 {
             mapView.camera.centerCoordinate = mapView.annotations[0].coordinate
+            mapView.camera.altitude = 9800
         }
     }
     
+
     
     func busStopToDisplayAT(indexPath: IndexPath) -> BusStops {
         let busStop: BusStops
@@ -262,7 +348,7 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func openSearch(){
-        UIView.animate(withDuration: 0.4) {
+        UIView.animate(withDuration: 0.2) {
             self.searchBarConstraint.constant=0
             self.tableViewHightConstraint.constant = self.getDistanceBetweenSearchAndKeyboard()
             self.view.layoutIfNeeded()
@@ -286,7 +372,7 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func closeSearch(){
-        UIView.animate(withDuration: 0.4) {
+        UIView.animate(withDuration: 0.2) {
             self.searchBarConstraint.constant=CGFloat(self.savedSearchConstraint)
             self.tableViewHightConstraint.constant = 0
             self.searchController.isActive = false
@@ -295,7 +381,7 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        addBusStopsOnMap()
+        refreshMapAnnotations()
         searchActive = false
         closeSearch()
         self.dismiss(animated: true, completion: nil)
@@ -326,6 +412,9 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
 
-    
 
 }
+
+
+
+

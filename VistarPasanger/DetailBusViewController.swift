@@ -413,7 +413,6 @@ extension Array where Element:Equatable {
 }
 
 //Расширяем UIView, чтобы мы могли анимировать появление элементов по alpha
-
 public extension UIView {
     
     func fadeIn(duration: TimeInterval = 0.5) {
@@ -430,3 +429,5 @@ public extension UIView {
     }
     
 }
+
+
