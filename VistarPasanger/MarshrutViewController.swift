@@ -169,25 +169,44 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
             annotationView.image = UIImage(named: "busStopIcon")
             annotationView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
             let label = UILabel(frame: CGRect(x: 0, y: 60, width: 200, height: 50))
+            var text = ""
+             if !annotation.isKind(of: MKUserLocation.self) {
+                text = annotation.title!!
+             } else{
+             text = "Вы здесь"
+             }
+            label.attributedText = NSMutableAttributedString(string: text,
+                                                             attributes: stroke(font: UIFont(name: "AppleSDGothicNeo-Bold", size: 32)!,
+                                                                                strokeWidth: 3, insideColor: #colorLiteral(red: 0.3122831257, green: 0.3381157644, blue: 0.3756441717, alpha: 1), strokeColor: #colorLiteral(red: 0.9177109772, green: 0.9177109772, blue: 0.9177109772, alpha: 1)))
             label.textAlignment = NSTextAlignment.center
-            label.font = UIFont(name: "AppleSDGothicNeo-Bold", size: 30)
-            label.textColor = #colorLiteral(red: 0.1712999683, green: 0.1712999683, blue: 0.1712999683, alpha: 1)
-            if !annotation.isKind(of: MKUserLocation.self) {
-                label.text = annotation.title!
-            } else{
-                label.text = "Вы здесь"
-            }
             label.sizeToFit()
             label.center = CGPoint(x: label.center.x-label.frame.width/2+annotationView.frame.width, y: 80)
+            annotationView.layer.shadowColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+            annotationView.layer.shadowRadius = 2
+            annotationView.layer.shadowOpacity = 0.5
+            annotationView.layer.shadowOffset = CGSize(width: 0, height: 2)
+            if (annotation is BusPointAnnotation) {
+                annotationView.layer.shadowPath = UIBezierPath(rect: annotationView.bounds).cgPath
+            }
             annotationView.addSubview(label)
         }
          return annotationView
     }
     
+    public func stroke(font: UIFont, strokeWidth: Float, insideColor: UIColor, strokeColor: UIColor) -> [NSAttributedStringKey: Any]{
+        return [
+            NSAttributedStringKey.strokeColor : strokeColor,
+            NSAttributedStringKey.foregroundColor : insideColor,
+            NSAttributedStringKey.strokeWidth : -strokeWidth,
+            NSAttributedStringKey.font : font
+        ]
+    }
+    
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         if abs(mapView.camera.altitude-savedMapHieght) > 20 {
-        busStopsForMap = filterBusStopsForMap(busStops: allBusStops)
-        refreshMapAnnotations()
+            if busStopsForMap.count != filterBusStopsForMap(busStops: allBusStops).count{
+                busStopsForMap = filterBusStopsForMap(busStops: allBusStops)
+                refreshMapAnnotations()}
         }
     }
     
@@ -199,6 +218,7 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
         views.forEach { (view) in
             view.alpha = 0.0
             view.fadeIn(duration: 0.3)
+
         }
     }
     
@@ -400,6 +420,8 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
         if mapView.annotations.count != 0 {
             mapView.camera.centerCoordinate = mapView.annotations[0].coordinate
         }
+        busStopsForMap = filterBusStopsForMap(busStops: filterdResoultArray)
+        refreshMapAnnotations()
         
     }
     
