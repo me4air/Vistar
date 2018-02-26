@@ -15,10 +15,9 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
 
     
     
+    @IBOutlet weak var searchConstraint: NSLayoutConstraint!
     @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var searchBarConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableViewHightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     
     
@@ -38,13 +37,13 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
 
     
     override func viewWillAppear(_ animated: Bool) {
+        tableView.isScrollEnabled = false
         getDataFromeCoreData()
         determineMyCurrentLocation()
         mapView.camera.altitude = 9800
         busStopsForSearch = clearBusStopsFromDuplicates(busStops: allBusStops)
         busStopsForMap = filterBusStopsForMap(busStops: allBusStops)
-        refreshMapAnnotations()
-        
+        refreshMapAnnotations()     
     }
     
     override func viewDidLoad() {
@@ -52,7 +51,7 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = 65
-        savedSearchConstraint = Double(searchBarConstraint.constant)
+        savedSearchConstraint = Double(searchConstraint.constant)
         configureSearchController()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
         locationManager.startUpdatingHeading()
@@ -113,6 +112,7 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
         }
         return filteredBusStops
     }
+    
     
     func createBusStopAnnotationSet(busStopName: String) -> [BusStops]{
         var busStopsForAnnotation: [BusStops] = []
@@ -324,7 +324,7 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
         searchController.searchBar.placeholder = "Куда поедем?"
         searchController.searchBar.sizeToFit()
         searchController.searchBar.becomeFirstResponder()
-        searchBar.addSubview(searchController.searchBar)
+        tableView.tableHeaderView = searchController.searchBar
         
     }
     
@@ -364,14 +364,15 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func getDistanceBetweenSearchAndKeyboard() -> CGFloat {
-        return self.view.frame.height-68-CGFloat(self.keyBoardHeight)
+        return self.view.frame.height-CGFloat(self.keyBoardHeight)
     }
     
     func openSearch(){
-        UIView.animate(withDuration: 0.2) {
-            self.searchBarConstraint.constant=0
+        UIView.animate(withDuration: 0.4) {
+            self.searchConstraint.constant=0
             self.tableViewHightConstraint.constant = self.getDistanceBetweenSearchAndKeyboard()
             self.view.layoutIfNeeded()
+            self.tableView.isScrollEnabled = true
             
         }
     }
@@ -380,7 +381,7 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
         if searchController.searchBar.text != ""{
         UIView.animate(withDuration: 0.2) {
             if (CGFloat(self.filterdResoultArray.count) * self.tableView.rowHeight < self.getDistanceBetweenSearchAndKeyboard()){
-                self.tableViewHightConstraint.constant = CGFloat(self.filterdResoultArray.count) * self.tableView.rowHeight
+                self.tableViewHightConstraint.constant = CGFloat(self.filterdResoultArray.count) * self.tableView.rowHeight + self.searchController.searchBar.frame.height
             }
             else {
                 self.tableViewHightConstraint.constant = self.getDistanceBetweenSearchAndKeyboard()
@@ -392,9 +393,9 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func closeSearch(){
-        UIView.animate(withDuration: 0.2) {
-            self.searchBarConstraint.constant=CGFloat(self.savedSearchConstraint)
-            self.tableViewHightConstraint.constant = 0
+        UIView.animate(withDuration: 0.4) {
+            self.searchConstraint.constant=CGFloat(self.savedSearchConstraint)
+            self.tableViewHightConstraint.constant = self.searchController.searchBar.frame.height
             self.searchController.isActive = false
             self.view.layoutIfNeeded()
         }
