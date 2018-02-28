@@ -381,7 +381,7 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
                 for i in 1...displayArivalsData[indexPath.row].arivalTimes!.count-1{
                     aditionalTimes = aditionalTimes + String(displayArivalsData[indexPath.row].arivalTimes![i]/60) + " Мин. \n"
                 }}
-            cell.arivalTime.text = String(describing: displayArivalsData[indexPath.row].arivalTimes![0]/60) + " Мин."
+            cell.arivalTime.text =  String(describing: displayArivalsData[indexPath.row].arivalTimes![0]/60) + " Мин."
             cell.busName.text = String(describing: displayArivalsData[indexPath.row].busName!)
             cell.aditionalrivalTime.text = aditionalTimes
         } else{

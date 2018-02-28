@@ -15,6 +15,7 @@
 		A031A1182019F50C00AC85DF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A031A1162019F50C00AC85DF /* LaunchScreen.storyboard */; };
 		A031A1202019F67800AC85DF /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = A031A11F2019F67800AC85DF /* .gitignore */; };
 		A031A1222019FB6C00AC85DF /* busStopsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A031A1212019FB6C00AC85DF /* busStopsTableViewController.swift */; };
+		A05403F32046E9BA00E71C38 /* MarshrutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05403F22046E9BA00E71C38 /* MarshrutTableViewCell.swift */; };
 		A062A34520249B4200375A70 /* DetaiBusDecodableStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A062A34420249B4200375A70 /* DetaiBusDecodableStructs.swift */; };
 		A062A34720249BF000375A70 /* BusStopsDecodableStucts.swift in Sources */ = {isa = PBXBuildFile; fileRef = A062A34620249BF000375A70 /* BusStopsDecodableStucts.swift */; };
 		A073194E201B31DC009761CB /* BusStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A073194D201B31DC009761CB /* BusStopTableViewCell.swift */; };
@@ -36,6 +37,7 @@
 		A031A1192019F50C00AC85DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A031A11F2019F67800AC85DF /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		A031A1212019FB6C00AC85DF /* busStopsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = busStopsTableViewController.swift; sourceTree = "<group>"; };
+		A05403F22046E9BA00E71C38 /* MarshrutTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarshrutTableViewCell.swift; sourceTree = "<group>"; };
 		A062A34420249B4200375A70 /* DetaiBusDecodableStructs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetaiBusDecodableStructs.swift; sourceTree = "<group>"; };
 		A062A34620249BF000375A70 /* BusStopsDecodableStucts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopsDecodableStucts.swift; sourceTree = "<group>"; };
 		A073194D201B31DC009761CB /* BusStopTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusStopTableViewCell.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 		A091A49D202B1F5200D2DB50 /* CastomTableViewCells */ = {
 			isa = PBXGroup;
 			children = (
+				A05403F22046E9BA00E71C38 /* MarshrutTableViewCell.swift */,
 				A073194D201B31DC009761CB /* BusStopTableViewCell.swift */,
 				A08C2DAE202098F600F12A31 /* busArrivalTableViewCell.swift */,
 			);
@@ -207,6 +210,7 @@
 				A031A1132019F50C00AC85DF /* VistarPasanger.xcdatamodeld in Sources */,
 				A062A34720249BF000375A70 /* BusStopsDecodableStucts.swift in Sources */,
 				A031A10B2019F50C00AC85DF /* AppDelegate.swift in Sources */,
+				A05403F32046E9BA00E71C38 /* MarshrutTableViewCell.swift in Sources */,
 				A0052279202862FB00550CFA /* BusPointAnnotation.swift in Sources */,
 				A08C2DAF202098F600F12A31 /* busArrivalTableViewCell.swift in Sources */,
 				A031A1222019FB6C00AC85DF /* busStopsTableViewController.swift in Sources */,

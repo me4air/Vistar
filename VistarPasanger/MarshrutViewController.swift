@@ -27,13 +27,16 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     let searchController = UISearchController(searchResultsController: nil)
     var locationManager = CLLocationManager()
     var keyBoardHeight = 0
+    var arivalsData: [Arrivals] = []
     var allBusStops: [BusStops] = []
     var busStopsForSearch: [BusStops] = []
     var filterdResoultArray: [BusStops] = []
     var busStopsForMap: [BusStops] = []
+    var nearableBusStops: [BusStops] = []
     var userLocation:CLLocation = CLLocation(latitude: 0.0, longitude: 0.0)
     let mapAnnotation = MKPointAnnotation()
     var savedMapHieght = 9800.0
+    
     
 
     
@@ -44,6 +47,7 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
         mapView.camera.altitude = 9800
         busStopsForSearch = clearBusStopsFromDuplicates(busStops: allBusStops)
         busStopsForMap = filterBusStopsForMap(busStops: allBusStops)
+        filterArrayByLocation(distance: 500)
         refreshMapAnnotations()     
     }
     
@@ -52,6 +56,8 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = 65
+        detailTable.delegate = self
+        detailTable.dataSource = self
         savedSearchConstraint = Double(searchConstraint.constant)
         configureSearchController()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: .UIKeyboardWillShow, object: nil)
@@ -62,6 +68,8 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
         mapView.camera.centerCoordinate.longitude = userLocation.coordinate.longitude
         detailTable.alpha = 0
         detailTable.rowHeight = 85
+        detailTable.layer.cornerRadius = 10
+        detailTable.clipsToBounds = true
         
     }
 
@@ -250,6 +258,10 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let userLocation:CLLocation = locations[0] as CLLocation
         self.userLocation = userLocation
+        if (userLocation.distance(from: self.userLocation)>50){
+            self.userLocation = userLocation
+            filterArrayByLocation(distance: 500)
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error)
@@ -272,7 +284,7 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     // MARK: - TableView
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        
+        if tableView == self.tableView {
         if searchController.isActive && searchController.searchBar.text != "" {
             return 1
         } else {
@@ -281,10 +293,15 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
             }
             else {
                 return 0}
+            }
+        }
+        else {
+            return 1
         }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if tableView == self.tableView {
         if searchController.isActive && searchController.searchBar.text != "" {
             return filterdResoultArray.count
         } else {
@@ -293,7 +310,15 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
             }
             else {
                 return 0}
+            }
         }
+        if tableView == detailTable && arivalsData.count != 0 {
+            return arivalsData.count
+        } else {
+            return 0
+            
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -305,7 +330,8 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
             mapView.camera.altitude = 9800
         }
         
-        showBusArivals()
+        let destinationBusStopArray = getDestinationsBusStopsArray(busStopName: searchController.searchBar.text!)
+        showBusArivals(fromStops: nearableBusStops, toStops: destinationBusStopArray)
 
     }
     
@@ -323,11 +349,21 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if tableView == self.tableView {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let busStop = busStopToDisplayAT(indexPath: indexPath)
         cell.textLabel?.text = busStop.name
         cell.detailTextLabel?.text = busStop.comment
-        return cell
+            return cell }
+        else  {
+            let cell = self.detailTable.dequeueReusableCell(withIdentifier: "deatailCell", for: indexPath) as? MarshrutTableViewCell
+            if arivalsData.count != 0 {
+            let arival = arivalsData[indexPath.row]
+                cell?.busName.text = arival.busRoute
+                cell?.arivalTime.text = "Через: " + String(describing: arival.arrivalTime!/60) + " Мин."
+            }
+            return cell!
+        }
     }
     
     func configureSearchController() {
@@ -402,11 +438,26 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.isScrollEnabled = true
     }
     
-    func showBusArivals(){
+    func showBusArivals(fromStops: [BusStops] , toStops: [BusStops]){
+        var fromList: [String] = []
+        var toList: [String] = []
+        if fromStops.count != 0{
+        for i in 0...fromStops.count-1{
+            fromList.append(String(Int(fromStops[i].id)))
+            }
+        }
+        if toStops.count != 0{
+            for i in 0...toStops.count-1{
+                toList.append(String(Int(toStops[i].id)))
+            }
+        }
+        getBusArraivalTime(fromList: fromList, tolist: toList)
+        
+    }
+    
+    func animateBusArivalsTable(){
         UIView.animate(withDuration: 0.2) {
-            
             self.detailTable.alpha = 0.8
-            
         }
     }
     
@@ -481,7 +532,87 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
         searchBar.resignFirstResponder()
     }
     
+    // Получаем полный список остановок куда может направляться пассажир
+    
+    func getDestinationsBusStopsArray(busStopName: String) -> [BusStops] {
+        var destinationBusStops: [BusStops] = []
+        if allBusStops.count != 0 {
+        for i in 0...allBusStops.count-1 {
+            if busStopName == allBusStops[i].name{
+                destinationBusStops.append(allBusStops[i])
+                }
+            }
+        }
+        return destinationBusStops
+    }
+    
+    //получаем расстояние в метрах между текущим положением и локацией с координатами
+    func getDistanceBetweenPoints(firstLocatin: CLLocation, secondLan: Double, secondLon: Double) -> Double{
+        let coordinate2 = CLLocation(latitude: secondLan, longitude: secondLon)
+        let distanceInMeters = firstLocatin.distance(from: coordinate2)
+        return distanceInMeters
+    }
 
+    //создаем массив билжайших остановок
+    func filterArrayByLocation(distance: Double){
+
+        if (allBusStops.count != 0){
+            nearableBusStops = []
+
+            for i in 0...allBusStops.count-1 {
+                if (getDistanceBetweenPoints(firstLocatin: userLocation, secondLan: allBusStops[i].lat, secondLon: allBusStops[i].lon) <= distance){
+                    nearableBusStops.append(allBusStops[i])
+                }
+            }
+        }
+    }
+    
+    func getBusArraivalTime(fromList: [String] , tolist: [String] ){
+        guard let url = URL(string: "http://passenger.vistar.su/VPArrivalServer/arrivaltimeslist") else {return}
+        let parameters = ["regionId":"36" , "fromStopId": fromList , "toStopId": tolist] as [String : Any]
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {return}
+        request.httpBody = httpBody
+        let session = URLSession.shared
+        session.dataTask(with: request) { (data, response, erroe) in
+            DispatchQueue.main.async {
+                if let response = response {
+                    print(response)
+                }
+                guard let data = data else {return}
+                do{
+                    let busArivals = try JSONDecoder().decode(Responce.self, from: data)
+                    self.arivalsData = []
+                    self.filterBusStopsArrival(response: busArivals)
+                    self.detailTable.reloadData()
+                    self.animateBusArivalsTable()
+                } catch {
+                    print(error)
+                }
+                
+            }
+            }.resume()
+    }
+    
+    func filterBusStopsArrival(response: Responce){
+        if let arrivalCounts =  response.busArrival?.count{
+            for i in 0...arrivalCounts-1{
+                if let arrival = response.busArrival![i].arrivals {
+                    for i in 0...arrival.count-1{
+                        let newArrival: Arrivals = Arrivals(arrivalTime: arrival[i].arrivalTime!, busRoute: arrival[i].busRoute!, lat: arrival[i].lat!, lon:  arrival[i].lon!, rideTime: arrival[i].rideTime!)
+                        arivalsData.append(newArrival)
+                        
+                    }
+                }
+            }
+            self.arivalsData = arivalsData.removeDuplicates()
+        
+        }
+        
+    }
+    
+    
 
 }
 

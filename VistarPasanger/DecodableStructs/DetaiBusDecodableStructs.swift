@@ -21,7 +21,7 @@ struct BusAririvals: Decodable {
 
 struct Arrivals: Decodable, Equatable {
     static func ==(lhs: Arrivals, rhs: Arrivals) -> Bool {
-        if ((lhs.arrivalTime == rhs.arrivalTime) && (lhs.busRoute == rhs.busRoute)) {
+        if ((lhs.arrivalTime == rhs.arrivalTime) && (lhs.busRoute == rhs.busRoute) || ((lhs.lat == rhs.lat) && (lhs.lon == rhs.lon))) {
             return true
         }
         else {return false}
