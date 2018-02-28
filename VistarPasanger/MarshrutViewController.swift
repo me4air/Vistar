@@ -19,6 +19,7 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var tableViewHightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var detailTable: UITableView!
     
     
     var searchActive : Bool = false
@@ -59,6 +60,8 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
         determineMyCurrentLocation()
         mapView.camera.centerCoordinate.latitude = userLocation.coordinate.latitude
         mapView.camera.centerCoordinate.longitude = userLocation.coordinate.longitude
+        detailTable.alpha = 0
+        detailTable.rowHeight = 85
         
     }
 
@@ -269,14 +272,27 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     // MARK: - TableView
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        
+        if searchController.isActive && searchController.searchBar.text != "" {
+            return 1
+        } else {
+            if searchController.isActive {
+                return 1
+            }
+            else {
+                return 0}
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if searchController.isActive && searchController.searchBar.text != ""{
+        if searchController.isActive && searchController.searchBar.text != "" {
             return filterdResoultArray.count
         } else {
-            return (busStopsForSearch.count)
+            if searchController.isActive {
+                return (busStopsForSearch.count)
+            }
+            else {
+                return 0}
         }
     }
     
@@ -288,6 +304,9 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
             mapView.camera.centerCoordinate = mapView.annotations[0].coordinate
             mapView.camera.altitude = 9800
         }
+        
+        showBusArivals()
+
     }
     
 
@@ -325,6 +344,11 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
         searchController.searchBar.sizeToFit()
         searchController.searchBar.becomeFirstResponder()
         tableView.tableHeaderView = searchController.searchBar
+        searchController.searchBar.barTintColor = #colorLiteral(red: 0.4718080163, green: 0.7201996446, blue: 0.9985340238, alpha: 1)
+        searchController.searchBar.tintColor = #colorLiteral(red: 0.05882352963, green: 0.180392161, blue: 0.2470588237, alpha: 1)
+        
+        
+
         
     }
     
@@ -373,6 +397,23 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
             self.tableViewHightConstraint.constant = self.getDistanceBetweenSearchAndKeyboard()
             self.view.layoutIfNeeded()
             self.tableView.isScrollEnabled = true
+            self.hideBusArivals()
+        }
+        tableView.isScrollEnabled = true
+    }
+    
+    func showBusArivals(){
+        UIView.animate(withDuration: 0.2) {
+            
+            self.detailTable.alpha = 0.8
+            
+        }
+    }
+    
+    func hideBusArivals(){
+        UIView.animate(withDuration: 0.2) {
+            
+            self.detailTable.alpha = 0
             
         }
     }
@@ -393,18 +434,24 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func closeSearch(){
+        
         UIView.animate(withDuration: 0.4) {
             self.searchConstraint.constant=CGFloat(self.savedSearchConstraint)
             self.tableViewHightConstraint.constant = self.searchController.searchBar.frame.height
             self.searchController.isActive = false
             self.view.layoutIfNeeded()
         }
+        tableView.reloadData()
+        tableView.setContentOffset(CGPoint.zero, animated: true)
+        tableView.isScrollEnabled = false
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         refreshMapAnnotations()
         searchActive = false
+        searchBar.text = "test"
         closeSearch()
+        searchBar.text = "test"
         self.dismiss(animated: true, completion: nil)
     }
     

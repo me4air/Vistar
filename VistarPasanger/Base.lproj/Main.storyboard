@@ -366,6 +366,39 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="I43-HP-jST">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="617"/>
                             </mapView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QoU-Fh-zFG">
+                                <rect key="frame" x="0.0" y="323" width="375" height="235"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="sectionIndexBackgroundColor" red="0.98171484220373828" green="0.98457669051320706" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="deatailCell" rowHeight="85" id="NMR-J7-eRe">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="85"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="NMR-J7-eRe" id="abs-x1-7Cv">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="84.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="От" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2XQ-gW-9Is">
+                                                    <rect key="frame" x="20" y="11" width="22" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="AppleSDGothicNeo-Regular" family="Apple SD Gothic Neo" pointSize="17"/>
+                                                    <color key="textColor" red="0.99215332757725483" green="1" blue="0.95545106489710485" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Димитрова" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rou-mW-a7w">
+                                                    <rect key="frame" x="50" y="11" width="310" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="17"/>
+                                                    <color key="textColor" red="0.94901830321106151" green="1" blue="0.94703275813852617" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" red="0.47180801630020142" green="0.72019964456558228" blue="0.99853402376174927" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <sections/>
+                            </tableView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="pE9-UV-97v">
                                 <rect key="frame" x="0.0" y="558" width="375" height="316"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -396,17 +429,22 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="t2K-a0-vk2" firstAttribute="bottom" secondItem="I43-HP-jST" secondAttribute="bottom" constant="1" id="0aT-uz-KdF"/>
+                            <constraint firstItem="QoU-Fh-zFG" firstAttribute="top" secondItem="t2K-a0-vk2" secondAttribute="top" constant="303" id="5T7-YV-sn9"/>
                             <constraint firstItem="pE9-UV-97v" firstAttribute="leading" secondItem="t2K-a0-vk2" secondAttribute="leading" id="FQS-MS-xsG"/>
                             <constraint firstItem="I43-HP-jST" firstAttribute="leading" secondItem="t2K-a0-vk2" secondAttribute="leading" id="Nwo-86-S5p"/>
                             <constraint firstItem="t2K-a0-vk2" firstAttribute="top" secondItem="I43-HP-jST" secondAttribute="top" constant="20" id="QEa-DG-p9Z"/>
                             <constraint firstItem="t2K-a0-vk2" firstAttribute="trailing" secondItem="I43-HP-jST" secondAttribute="trailing" id="QRm-3c-0WR"/>
+                            <constraint firstItem="QoU-Fh-zFG" firstAttribute="trailing" secondItem="t2K-a0-vk2" secondAttribute="trailing" id="hc9-Ct-QjZ"/>
+                            <constraint firstItem="QoU-Fh-zFG" firstAttribute="leading" secondItem="t2K-a0-vk2" secondAttribute="leading" id="qaJ-nL-8CA"/>
                             <constraint firstItem="pE9-UV-97v" firstAttribute="top" secondItem="t2K-a0-vk2" secondAttribute="top" constant="538" id="rcD-vn-m7x"/>
+                            <constraint firstItem="t2K-a0-vk2" firstAttribute="bottom" secondItem="QoU-Fh-zFG" secondAttribute="bottom" constant="60" id="vDN-Gg-J3F"/>
                             <constraint firstItem="pE9-UV-97v" firstAttribute="trailing" secondItem="t2K-a0-vk2" secondAttribute="trailing" id="wV1-zf-SSl"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="t2K-a0-vk2"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Маршрут" image="map" id="wy4-rj-Ajf"/>
                     <connections>
+                        <outlet property="detailTable" destination="QoU-Fh-zFG" id="28V-gA-g8O"/>
                         <outlet property="mapView" destination="I43-HP-jST" id="XsV-aF-lpH"/>
                         <outlet property="searchConstraint" destination="rcD-vn-m7x" id="POj-r5-8dd"/>
                         <outlet property="tableView" destination="pE9-UV-97v" id="rfl-23-FOQ"/>
