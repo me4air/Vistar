@@ -71,7 +71,6 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
         detailTable.rowHeight = 85
         detailTable.layer.cornerRadius = 20
         detailTable.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        detailTable.clipsToBounds = true
         
         
     }
