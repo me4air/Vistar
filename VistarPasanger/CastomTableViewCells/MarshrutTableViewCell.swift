@@ -12,9 +12,12 @@ class MarshrutTableViewCell: UITableViewCell {
     
     @IBOutlet weak var busName: UILabel!
     @IBOutlet weak var arivalTime: UILabel!
+    @IBOutlet weak var FromStopName: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        FromStopName.adjustsFontSizeToFitWidth = true
+        FromStopName.minimumScaleFactor = 0.2
         // Initialization code
     }
 

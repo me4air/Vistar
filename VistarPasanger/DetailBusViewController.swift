@@ -208,8 +208,8 @@ class DetailBusViewController: UIViewController, UITableViewDelegate, MKMapViewD
         if let arrivalCounts =  response.busArrival?.count{
             for i in 0...arrivalCounts-1{
                 if let arrival = response.busArrival![i].arrivals {
-                    for i in 0...arrival.count-1{
-                        let newArrival: Arrivals = Arrivals(arrivalTime: arrival[i].arrivalTime!, busRoute: arrival[i].busRoute!, lat: arrival[i].lat!, lon:  arrival[i].lon!, rideTime: arrival[i].rideTime!)
+                    for j in 0...arrival.count-1{
+                        let newArrival: Arrivals = Arrivals(arrivalTime: arrival[j].arrivalTime!, busRoute: arrival[j].busRoute!, lat: arrival[j].lat!, lon:  arrival[j].lon!, rideTime: arrival[j].rideTime!)
                         arivalsData.append(newArrival)
                         
                     }

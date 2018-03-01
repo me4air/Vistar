@@ -28,7 +28,7 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     let searchController = UISearchController(searchResultsController: nil)
     var locationManager = CLLocationManager()
     var keyBoardHeight = 0
-    var arivalsData: [Arrivals] = []
+    var arivalsData: [ArivalsToMarshrutData] = []
     var allBusStops: [BusStops] = []
     var busStopsForSearch: [BusStops] = []
     var filterdResoultArray: [BusStops] = []
@@ -368,6 +368,7 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
             let arival = arivalsData[indexPath.row]
                 cell?.busName.text = arival.busRoute
                 cell?.arivalTime.text = "Через: " + String(describing: arival.arrivalTime!/60) + " Мин."
+                cell?.FromStopName.text = arival.fromStopId!
             }
             return cell!
         }
@@ -463,7 +464,11 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func animateBusArivalsTable(){
-       detailTableViewHeightConstraint.constant = CGFloat(detailTable.numberOfRows(inSection: 0) * Int(detailTable.rowHeight))
+        if CGFloat(detailTable.numberOfRows(inSection: 0) * Int(detailTable.rowHeight)) < CGFloat(5 * Int(detailTable.rowHeight)){
+            detailTableViewHeightConstraint.constant = CGFloat(detailTable.numberOfRows(inSection: 0) * Int(detailTable.rowHeight))
+        } else {
+            detailTableViewHeightConstraint.constant = CGFloat(4 * Int(detailTable.rowHeight))
+        }
         UIView.animate(withDuration: 0.2) {
             self.detailTable.alpha = 0.8
         }
@@ -604,22 +609,50 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func filterBusStopsArrival(response: Responce){
+        
+        if let responseCount = response.busArrival?.count {
+            for i in 0...responseCount-1{
+                if let arrival = response.busArrival![i].arrivals{
+                    for j in 0...arrival.count-1{
+                        let fromStopName = filterStopFromIdToName(id: response.busArrival![i].fromStopId!)
+                        let newArrival: ArivalsToMarshrutData = ArivalsToMarshrutData(fromStopId: fromStopName, arrivalTime: arrival[j].arrivalTime!, busRoute: arrival[j].busRoute!, lat: arrival[j].lat!, lon: arrival[j].lon!, rideTime: arrival[j].rideTime!)
+                            arivalsData.append(newArrival)
+                    }
+                }
+            }
+        }
+        
+        self.arivalsData = arivalsData.removeDuplicates()
+        
+        /*
         if let arrivalCounts =  response.busArrival?.count{
             for i in 0...arrivalCounts-1{
                 if let arrival = response.busArrival![i].arrivals {
                     for i in 0...arrival.count-1{
                         let newArrival: Arrivals = Arrivals(arrivalTime: arrival[i].arrivalTime!, busRoute: arrival[i].busRoute!, lat: arrival[i].lat!, lon:  arrival[i].lon!, rideTime: arrival[i].rideTime!)
                         arivalsData.append(newArrival)
-                        
                     }
                 }
             }
             self.arivalsData = arivalsData.removeDuplicates()
         
-        }
+        } */
         
     }
     
+    
+    func filterStopFromIdToName(id: Int) -> String {
+        var name = ""
+        if allBusStops.count != 0 {
+            for i in 0...allBusStops.count-1{
+                if allBusStops[i].id == Double(id) {
+                    name = allBusStops[i].name!
+                    return name
+                }
+            }
+        }
+        return name
+    }
     
 
 }

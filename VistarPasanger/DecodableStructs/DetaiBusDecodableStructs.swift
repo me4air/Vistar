@@ -38,3 +38,19 @@ struct ArivalsToDislplayData {
     var busName: String?
     var arivalTimes: [Int]?
 }
+
+struct ArivalsToMarshrutData: Decodable, Equatable {
+    static func ==(lhs: ArivalsToMarshrutData, rhs: ArivalsToMarshrutData) -> Bool {
+        if ((lhs.arrivalTime == rhs.arrivalTime) && (lhs.fromStopId == rhs.fromStopId) && (lhs.busRoute == rhs.busRoute) || ((lhs.lat == rhs.lat) && (lhs.lon == rhs.lon))) {
+            return true
+        }
+        else {return false}
+    }
+    
+    var fromStopId: String?
+    var arrivalTime: Int?
+    var busRoute: String?
+    var lat: Double?
+    var lon: Double?
+    var rideTime: Int?
+}
