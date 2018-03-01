@@ -21,6 +21,7 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var detailTable: UITableView!
     
+    @IBOutlet weak var detailTableViewHeightConstraint: NSLayoutConstraint!
     
     var searchActive : Bool = false
     var savedSearchConstraint = 0.0
@@ -68,8 +69,10 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
         mapView.camera.centerCoordinate.longitude = userLocation.coordinate.longitude
         detailTable.alpha = 0
         detailTable.rowHeight = 85
-        detailTable.layer.cornerRadius = 10
+        detailTable.layer.cornerRadius = 20
+        detailTable.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         detailTable.clipsToBounds = true
+        
         
     }
 
@@ -322,6 +325,7 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if tableView == self.tableView {
         tableView.deselectRow(at: indexPath, animated: true)
         searchController.searchBar.text = tableView.cellForRow(at: indexPath)?.textLabel?.text
         searchBarSearchButtonClicked(searchController.searchBar)
@@ -332,7 +336,10 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
         
         let destinationBusStopArray = getDestinationsBusStopsArray(busStopName: searchController.searchBar.text!)
         showBusArivals(fromStops: nearableBusStops, toStops: destinationBusStopArray)
-
+        }
+        else {
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
     }
     
 
@@ -456,6 +463,7 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func animateBusArivalsTable(){
+       detailTableViewHeightConstraint.constant = CGFloat(detailTable.numberOfRows(inSection: 0) * Int(detailTable.rowHeight))
         UIView.animate(withDuration: 0.2) {
             self.detailTable.alpha = 0.8
         }
@@ -614,6 +622,15 @@ class MarshrutViewController: UIViewController, UITableViewDelegate, UITableView
     
     
 
+}
+
+extension UIView {
+    func round(corners: UIRectCorner, radius: CGFloat) {
+        let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        let mask = CAShapeLayer()
+        mask.path = path.cgPath
+        self.layer.mask = mask
+    }
 }
 
 

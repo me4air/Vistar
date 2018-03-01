@@ -367,35 +367,47 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="617"/>
                             </mapView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="QoU-Fh-zFG">
-                                <rect key="frame" x="0.0" y="323" width="375" height="235"/>
+                                <rect key="frame" x="16" y="323" width="343" height="235"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="235" id="0bq-Gn-b8o"/>
+                                </constraints>
                                 <color key="sectionIndexBackgroundColor" red="0.98171484220373828" green="0.98457669051320706" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="deatailCell" rowHeight="85" id="NMR-J7-eRe" customClass="MarshrutTableViewCell" customModule="VistarPasanger" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="85"/>
+                                        <rect key="frame" x="0.0" y="28" width="343" height="85"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="NMR-J7-eRe" id="abs-x1-7Cv">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="84.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="84.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="90" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dxg-KA-MU7">
-                                                    <rect key="frame" x="15" y="11" width="66" height="34"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="88" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dxg-KA-MU7">
+                                                    <rect key="frame" x="44" y="11" width="66" height="41"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="34"/>
                                                     <color key="textColor" red="0.12767477456315898" green="0.12829156091370564" blue="0.12705798821261233" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Через: 25 Мин." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mah-3S-7bl">
-                                                    <rect key="frame" x="15" y="50" width="353" height="34"/>
+                                                    <rect key="frame" x="44" y="50" width="353" height="34"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="AppleSDGothicNeo-Bold" family="Apple SD Gothic Neo" pointSize="21"/>
                                                     <color key="textColor" red="0.12767477456315898" green="0.12829156091370564" blue="0.12705798821261233" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="busIcon" translatesAutoresizingMaskIntoConstraints="NO" id="8Eo-ZR-7Mu">
+                                                    <rect key="frame" x="15" y="18" width="20" height="20"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="timeIcon" translatesAutoresizingMaskIntoConstraints="NO" id="zGC-dt-FBB">
+                                                    <rect key="frame" x="16" y="54" width="20" height="20"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
                                             </subviews>
                                             <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="tintColor" red="0.83741801979999997" green="0.83743780850000005" blue="0.83742713930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="1" green="0.98509968163375539" blue="0.9907311337096556" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="0.83741801979999997" green="0.83743780850000005" blue="0.83742713930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="tintColor" red="0.96612745352563523" green="1" blue="0.95620543321073836" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <outlet property="arivalTime" destination="Mah-3S-7bl" id="5Pv-I7-kNz"/>
@@ -435,13 +447,12 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="t2K-a0-vk2" firstAttribute="bottom" secondItem="I43-HP-jST" secondAttribute="bottom" constant="1" id="0aT-uz-KdF"/>
-                            <constraint firstItem="QoU-Fh-zFG" firstAttribute="top" secondItem="t2K-a0-vk2" secondAttribute="top" constant="303" id="5T7-YV-sn9"/>
                             <constraint firstItem="pE9-UV-97v" firstAttribute="leading" secondItem="t2K-a0-vk2" secondAttribute="leading" id="FQS-MS-xsG"/>
                             <constraint firstItem="I43-HP-jST" firstAttribute="leading" secondItem="t2K-a0-vk2" secondAttribute="leading" id="Nwo-86-S5p"/>
                             <constraint firstItem="t2K-a0-vk2" firstAttribute="top" secondItem="I43-HP-jST" secondAttribute="top" constant="20" id="QEa-DG-p9Z"/>
                             <constraint firstItem="t2K-a0-vk2" firstAttribute="trailing" secondItem="I43-HP-jST" secondAttribute="trailing" id="QRm-3c-0WR"/>
-                            <constraint firstItem="QoU-Fh-zFG" firstAttribute="trailing" secondItem="t2K-a0-vk2" secondAttribute="trailing" id="hc9-Ct-QjZ"/>
-                            <constraint firstItem="QoU-Fh-zFG" firstAttribute="leading" secondItem="t2K-a0-vk2" secondAttribute="leading" id="qaJ-nL-8CA"/>
+                            <constraint firstItem="QoU-Fh-zFG" firstAttribute="trailing" secondItem="t2K-a0-vk2" secondAttribute="trailing" constant="-16" id="hc9-Ct-QjZ"/>
+                            <constraint firstItem="QoU-Fh-zFG" firstAttribute="leading" secondItem="t2K-a0-vk2" secondAttribute="leading" constant="16" id="qaJ-nL-8CA"/>
                             <constraint firstItem="pE9-UV-97v" firstAttribute="top" secondItem="t2K-a0-vk2" secondAttribute="top" constant="538" id="rcD-vn-m7x"/>
                             <constraint firstItem="t2K-a0-vk2" firstAttribute="bottom" secondItem="QoU-Fh-zFG" secondAttribute="bottom" constant="60" id="vDN-Gg-J3F"/>
                             <constraint firstItem="pE9-UV-97v" firstAttribute="trailing" secondItem="t2K-a0-vk2" secondAttribute="trailing" id="wV1-zf-SSl"/>
@@ -451,6 +462,7 @@
                     <tabBarItem key="tabBarItem" title="Маршрут" image="map" id="wy4-rj-Ajf"/>
                     <connections>
                         <outlet property="detailTable" destination="QoU-Fh-zFG" id="28V-gA-g8O"/>
+                        <outlet property="detailTableViewHeightConstraint" destination="0bq-Gn-b8o" id="F0y-Iw-W3o"/>
                         <outlet property="mapView" destination="I43-HP-jST" id="XsV-aF-lpH"/>
                         <outlet property="searchConstraint" destination="rcD-vn-m7x" id="POj-r5-8dd"/>
                         <outlet property="tableView" destination="pE9-UV-97v" id="rfl-23-FOQ"/>
